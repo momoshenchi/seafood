@@ -3,7 +3,7 @@ package model.customer;
 import java.util.Date;
 
 public class BeanUser {
-    private  static  BeanUser currentLoginUser =null;
+    public  static  BeanUser currentLoginUser =null;
     private  int userid;
     private  String  username;
     private  String sex;

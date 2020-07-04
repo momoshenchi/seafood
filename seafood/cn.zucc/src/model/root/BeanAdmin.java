@@ -1,6 +1,7 @@
 package model.root;
 
 public class BeanAdmin {
+    public  BeanAdmin currentadmin=null;
     private  int adminid;
     private  String adminname;
     private  String pwd;
