@@ -111,6 +111,10 @@ public class UserManager {
         {
             throw new BaseException("username is null");
         }
+        if(pwd==null||"".equals(pwd))
+        {
+            throw new BaseException("pwd is null");
+        }
         java.sql.Connection con=null;
         java.sql.PreparedStatement pst=null;
         try
@@ -122,7 +126,7 @@ public class UserManager {
             ResultSet rs=pst.executeQuery();
             if(!rs.next())
             {
-                throw new BaseException("userid is not exist");
+                throw new BaseException("user is not exist");
             }
             String p=rs.getString(1);
             if(!p.equals(pwd))

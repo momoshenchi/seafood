@@ -25,13 +25,13 @@ public class FrmLogin extends JDialog implements ActionListener{
     private JButton btnRegister = new JButton("Sign up");
     private JButton btnAdmin = new JButton("Admin");
     private JLabel labelUser = new JLabel("username");
-
     private JLabel labelPwd = new JLabel("password");
+
     private JTextField edtUserId = new JTextField(20);
     private JPasswordField edtPwd = new JPasswordField(20);
 
-    public FrmLogin(Frame f, String s, boolean b) {
-        super(f, s, b);
+    public FrmLogin(Frame f,String s,boolean b) {
+        super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnAdmin);
         toolBar.add(this.btnRegister);
@@ -43,13 +43,13 @@ public class FrmLogin extends JDialog implements ActionListener{
         workPane.add(labelPwd);
         workPane.add(edtPwd);
         this.getContentPane().add(workPane, BorderLayout.CENTER);
+
+
         this.setSize(320, 140);
-        // ��Ļ������ʾ
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,
                 (int) (height - this.getHeight()) / 2);
-
         this.validate();
 
         btnLogin.addActionListener(this);
@@ -75,6 +75,7 @@ public class FrmLogin extends JDialog implements ActionListener{
                 return;
             }
             this.setVisible(false);
+            FrmMain.flag=0;
 
         } else if (e.getSource() == this.btnCancel) {
             System.exit(0);
@@ -85,8 +86,8 @@ public class FrmLogin extends JDialog implements ActionListener{
 
         else if(e.getSource()==this.btnAdmin)
         {
-            FrmAd ad=new FrmAd(this,"Admin",true);
-            ad.setVisible(true);
+            FrmMain.flag=1;
+            this.setVisible(false);
         }
     }
 
