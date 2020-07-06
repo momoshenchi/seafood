@@ -87,7 +87,7 @@ public class AddressManager {
 
     }
 
-    public List<BeanAddr> loadAll(){
+    public List<BeanAddr> loadAllUserAddr(){
         List<BeanAddr> result=new ArrayList<>();
         java.sql.Connection con=null;
         int userid = BeanUser.currentLoginUser.getUserid();
@@ -96,8 +96,6 @@ public class AddressManager {
             String sql = "select  * from address where userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1,userid);
-            pst.executeUpdate();
-            pst.close();
             ResultSet rs=pst.executeQuery();
             while(rs.next())
             {
@@ -192,5 +190,6 @@ public class AddressManager {
             }
         }
     }
+
 
 }

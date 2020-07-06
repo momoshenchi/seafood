@@ -6,7 +6,7 @@ public class BeanDiscount {
     private int discountid;
     private String detail;
     private int min_number;
-    private int discount;
+    private double discount;
     private Date start_date;
     private Date end_date;
 
@@ -34,11 +34,13 @@ public class BeanDiscount {
         this.min_number = min_number;
     }
 
-    public int getDiscount() {
+    public double getDiscount()
+    {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(double discount)
+    {
         this.discount = discount;
     }
 

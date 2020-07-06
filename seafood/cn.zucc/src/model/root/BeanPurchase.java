@@ -1,11 +1,35 @@
 package model.root;
 
+import java.util.Date;
+
 public class BeanPurchase {
     private  int purchaseid;
     private  int commodityid;
     private  int number;
     private  String status;
     private  int adminid;
+    private  String commodityname;
+    private Date purchasedate;
+
+    public String getCommodityname()
+    {
+        return commodityname;
+    }
+
+    public void setCommodityname(String commodityname)
+    {
+        this.commodityname = commodityname;
+    }
+
+    public Date getPurchasedate()
+    {
+        return purchasedate;
+    }
+
+    public void setPurchasedate(Date purchasedate)
+    {
+        this.purchasedate = purchasedate;
+    }
 
     public int getPurchaseid() {
         return purchaseid;

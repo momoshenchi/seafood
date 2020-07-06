@@ -8,7 +8,7 @@ public class BeanCommodity {
     private int remain_number;
     private String spec;
     private String detail;
-    private  Byte[]  picture;
+    private String picture;
     private  int typeid;
 
     public int getTypeid() {
@@ -75,11 +75,13 @@ public class BeanCommodity {
         this.detail = detail;
     }
 
-    public Byte[] getPicture() {
+    public String getPicture()
+    {
         return picture;
     }
 
-    public void setPicture(Byte[] picture) {
+    public void setPicture(String picture)
+    {
         this.picture = picture;
     }
 }
