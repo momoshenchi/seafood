@@ -1,10 +1,10 @@
-package ui;
+package ui.root;
 
 import control.AdminManager;
 import control.PromoteManager;
-import model.root.BeanPurchase;
-import java.util.ArrayList;
-import util.BaseException;
+import model.food.BeanCommodity;
+import model.food.BeanType;
+import model.promote.BeanDiscount;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,39 +13,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class FrmPurManager extends JDialog implements ActionListener
+public class FrmTypeManager extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
-    private Button btnAdd = new Button("添加采购");
-    private Button btnModify = new Button("修改采购");
-    private Button btnDelete = new Button("删除采购");
+    private JButton btnAdd = new JButton("添加类别");
+    private JButton btnModify = new JButton("修改类别");
+    private JButton btnDelete = new JButton("删除类别");
 
-    private Object tblTitle[]={"purchaseid","commodityid","number","status","adminid","commodityname","purchasedate"};
+    private Object tblTitle[]={"typeid","typename","description"};
     private Object tblData[][];
-    List<BeanPurchase> pubs;
+    List<BeanType> pubs;
 
 
     DefaultTableModel tablmod=new DefaultTableModel();
     private JTable dataTable=new JTable(tablmod);
 
     private void reloadTable(){
-        pubs=(new AdminManager()).loadAllPurchase();
-        tblData =new Object[pubs.size()][7];
+        pubs=(new AdminManager()).loadAllType();
+        tblData =new Object[pubs.size()][3];
         for(int i=0;i<pubs.size();i++){
-            tblData[i][0]=pubs.get(i).getPurchaseid()+"";
-            tblData[i][1]=pubs.get(i).getCommodityid()+"";
-            tblData[i][2]=pubs.get(i).getNumber()+"";
-            tblData[i][3]=pubs.get(i).getStatus();
-            tblData[i][4]=pubs.get(i).getAdminid()+"";
-            tblData[i][5]=pubs.get(i).getCommodityname();
-            tblData[i][6]=pubs.get(i).getPurchasedate();
+            tblData[i][0]=pubs.get(i).getTypeid()+"";
+            tblData[i][1]=pubs.get(i).getTypename();
+            tblData[i][2]=pubs.get(i).getDescription();
         }
         tablmod.setDataVector(tblData,tblTitle);
         this.dataTable.validate();
         this.dataTable.repaint();
     }
 
-    public  FrmPurManager(Frame f, String s, boolean b)
+    public  FrmTypeManager(Frame f, String s, boolean b)
     {
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -75,7 +71,12 @@ public class FrmPurManager extends JDialog implements ActionListener
     {
         if(e.getSource()==this.btnAdd)
         {
-
+            FrmTypeManager_add add=new FrmTypeManager_add(this,"add",true);
+            add.setVisible(true);
+            if(add.getTypename()!=null)
+            {
+                reloadTable();
+            }
         }
         else if(e.getSource()==this.btnModify)
         {
@@ -83,8 +84,18 @@ public class FrmPurManager extends JDialog implements ActionListener
         }
         else if(e.getSource()==this.btnDelete)
         {
-
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择discount", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            BeanType p = this.pubs.get(i);
+            if (JOptionPane.showConfirmDialog(this, "确定删除吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            {
+                (new AdminManager()).delType(p);
+                this.reloadTable();
+            }
         }
     }
-
 }

@@ -1,23 +1,24 @@
-package ui;
+package ui.promote;
 
-import control.AdminManager;
 import control.PromoteManager;
+import model.promote.BeanCoupon;
+import model.promote.BeanDiscount;
 import model.promote.BeanSale;
-import model.root.BeanPurchase;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class FrmSaleManager extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
-    private Button btnAdd = new Button("添加促销");
-    private Button btnModify = new Button("修改促销");
-    private Button btnDelete = new Button("删除促销");
+    private JButton btnAdd = new JButton("添加促销");
+    private JButton btnModify = new JButton("修改促销");
+    private JButton btnDelete = new JButton("删除促销");
 
     private Object tblTitle[]={"saleid","commodityid","saleprice","maxnumber","start_date","end_date"};
     private Object tblData[][];
@@ -28,6 +29,7 @@ public class FrmSaleManager extends JDialog implements ActionListener
     private JTable dataTable=new JTable(tablmod);
 
     private void reloadTable(){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy--MM--dd");
         pubs=(new PromoteManager()).loadAllSale();
         tblData =new Object[pubs.size()][6];
         for(int i=0;i<pubs.size();i++){
@@ -35,8 +37,8 @@ public class FrmSaleManager extends JDialog implements ActionListener
             tblData[i][1]=pubs.get(i).getCommodityid()+"";
             tblData[i][2]=pubs.get(i).getSaleprice()+"";
             tblData[i][3]=pubs.get(i).getMaxnumber()+"";
-            tblData[i][4]=pubs.get(i).getStart_date();
-            tblData[i][5]=pubs.get(i).getEnd_date();
+            tblData[i][4]=sdf.format(pubs.get(i).getStart_date());
+            tblData[i][5]=sdf.format(pubs.get(i).getEnd_date());
         }
         tablmod.setDataVector(tblData,tblTitle);
         this.dataTable.validate();
@@ -73,15 +75,41 @@ public class FrmSaleManager extends JDialog implements ActionListener
     {
         if(e.getSource()==this.btnAdd)
         {
-
+                FrmSaleManager_add add=new FrmSaleManager_add(this,"add",true);
+                add.setVisible(true);
+                if(add.getComid()!=0)
+                {
+                    reloadTable();
+                }
         }
         else if(e.getSource()==this.btnModify)
         {
-
+            int i=this.dataTable.getSelectedRow();
+            if(i<0) {
+                JOptionPane.showMessageDialog(null,  "请选择sale","提示",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            BeanSale p=this.pubs.get(i);
+            if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            {
+                (new PromoteManager()).modifySale(p);
+                this.reloadTable();
+            }
         }
         else if(e.getSource()==this.btnDelete)
         {
-
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择sale", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            BeanSale p = this.pubs.get(i);
+            if (JOptionPane.showConfirmDialog(this, "确定删除吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            {
+                (new PromoteManager()).delSale(p);
+                this.reloadTable();
+            }
         }
     }
 }

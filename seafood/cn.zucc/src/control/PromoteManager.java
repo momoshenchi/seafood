@@ -6,10 +6,7 @@ import model.promote.BeanSale;
 import util.BusinessException;
 import util.DBUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,12 +68,12 @@ public class PromoteManager
             con.setAutoCommit(false);
             String sql = "delete from discount_rule where  discountid = ?";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setDouble(1, bd.getDiscount());
+            pst.setInt(1, bd.getDiscountid());
             pst.executeUpdate();
             pst.close();
             sql = "delete from commodity_discount where  discountid = ?";
             pst = con.prepareStatement(sql);
-            pst.setDouble(1, bd.getDiscount());
+            pst.setInt(1, bd.getDiscountid());
             pst.executeUpdate();
             pst.close();
             con.commit();
@@ -103,7 +100,116 @@ public class PromoteManager
                 }
                 catch (SQLException e)
                 {
-                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public  void modifyCoupon(BeanCoupon bc)
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "update  coupon set   detail = ? , start_price = ? , sub_price = ? , start_date =? ," +
+                     "end_date = ? where  couponid = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1,bc.getDetail());
+            pst.setDouble(2,bc.getStart_price());
+            pst.setDouble(3,bc.getSub_price());
+            pst.setTimestamp(4,new Timestamp(bc.getStart_date().getTime()));
+            pst.setTimestamp(5,new Timestamp(bc.getEnd_date().getTime()));
+            pst.setInt(6, bc.getCouponid());
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public void modifySale(BeanSale bs)
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "update  sale  set  saleprice = ? , maxnumber = ? , start_date =? ," +
+                    "end_date = ? where  saleid = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setDouble(1,bs.getSaleprice());
+            pst.setInt(2,bs.getMaxnumber());
+            pst.setTimestamp(4,new Timestamp(bs.getStart_date().getTime()));
+            pst.setTimestamp(5,new Timestamp(bs.getEnd_date().getTime()));
+            pst.setInt(6, bs.getSaleid());
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public  void modifyDiscountRule(BeanDiscount bd)
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "update  discount_rule set  detail = ? , min_number = ? ,discount= ? , start_date =? ," +
+                    "end_date = ? where  discountid = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1,bd.getDetail());
+            pst.setInt(2,bd.getMin_number());
+            pst.setDouble(3,bd.getDiscount());
+            pst.setTimestamp(4,new Timestamp(bd.getStart_date().getTime()));
+            pst.setTimestamp(5,new Timestamp(bd.getEnd_date().getTime()));
+            pst.setInt(6, bd.getDiscountid());
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -221,11 +327,9 @@ public class PromoteManager
             pst.setInt(1, bs.getSaleid());
             pst.executeUpdate();
             pst.close();
-
         }
         catch (SQLException e)
         {
-
             e.printStackTrace();
         }
         finally
@@ -368,7 +472,7 @@ public class PromoteManager
         try
         {
             con = DBUtil.getConnection();
-            String sql = "insert  into coupon(deteil,start_price,sub_price,start_date,end_date) values " +
+            String sql = "insert  into coupon(detail,start_price,sub_price,start_date,end_date) values " +
                     "(?,?,?,?,?) ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, detail);
@@ -403,13 +507,13 @@ public class PromoteManager
 
     public void addDiscountRule(String detail, int min_number, double discount, String startime, String endtime) throws BusinessException
     {
-        if (min_number == 0)
+        if (min_number <= 0)
         {
             throw new BusinessException("please input min_number");
         }
-        if (discount == 0)
+        if (discount == 0||discount>1)
         {
-            throw new BusinessException("please input discount");
+            throw new BusinessException("discount error");
         }
         if (startime == null || "".equals(startime))
         {
@@ -438,7 +542,7 @@ public class PromoteManager
         try
         {
             con = DBUtil.getConnection();
-            String sql = "insert  into discount_rule(deteil,min_number,discount,start_date,end_date) values " +
+            String sql = "insert  into discount_rule(detail,min_number,discount,start_date,end_date) values " +
                     "(?,?,?,?,?) ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, detail);

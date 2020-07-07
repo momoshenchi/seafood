@@ -11,13 +11,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+
 public class FrmUser2 extends JFrame implements ActionListener{
 	private Dimension frameSize = new Dimension(1600, 840);
 	private ImageIcon imageIcon = ReadImage.read("12.jpg");
@@ -64,6 +59,8 @@ public class FrmUser2 extends JFrame implements ActionListener{
 	    JLabel lbBg = new JLabel(imageIcon);
 	    lbBg.setBounds(0, 0, this.getWidth(), this.getHeight());
 	    this.getContentPane().add(lbBg);
+      this.setUndecorated(true);
+      this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 	    setVisible(true);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setIconImage(imageIcon.getImage());
