@@ -5,6 +5,7 @@ import control.PromoteManager;
 import model.food.BeanCommodity;
 import model.promote.BeanCoupon;
 import model.root.BeanPurchase;
+import ui.promote.FrmCouManager_mod;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -76,7 +77,19 @@ public class FrmComManager extends JDialog implements ActionListener
 
         if(e.getSource()==this.btnModify)
         {
-
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择commodity", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            BeanCommodity p = this.pubs.get(i);
+            FrmComManager_mod mod = new FrmComManager_mod(this, "modify", true, p);
+            mod.setVisible(true);
+            if (mod.getSpce() != null)
+            {
+                reloadTable();
+            }
         }
         else if(e.getSource()==this.btnDelete)
         {

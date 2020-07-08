@@ -4,7 +4,10 @@ import control.AdminManager;
 import control.PromoteManager;
 import model.food.BeanCommodity;
 import model.food.BeanType;
+import model.promote.BeanCoupon;
 import model.promote.BeanDiscount;
+import ui.promote.FrmCouManager_mod;
+import util.BusinessException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -63,8 +66,6 @@ public class FrmTypeManager extends JDialog implements ActionListener
         this.btnAdd.addActionListener(this);
         this.btnModify.addActionListener(this);
         this.btnDelete.addActionListener(this);
-
-
     }
 
     public void actionPerformed(ActionEvent e)
@@ -80,20 +81,39 @@ public class FrmTypeManager extends JDialog implements ActionListener
         }
         else if(e.getSource()==this.btnModify)
         {
-
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择type", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            BeanType p = this.pubs.get(i);
+            FrmTypeManager_mod mod = new FrmTypeManager_mod(this, "modify", true, p);
+            mod.setVisible(true);
+            if (mod.getDes() != null)
+            {
+                reloadTable();
+            }
         }
         else if(e.getSource()==this.btnDelete)
         {
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
             {
-                JOptionPane.showMessageDialog(null, "请选择discount", "提示", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "请选择type", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             BeanType p = this.pubs.get(i);
             if (JOptionPane.showConfirmDialog(this, "确定删除吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                (new AdminManager()).delType(p);
+                try
+                {
+                    (new AdminManager()).delType(p);
+                }
+                catch (BusinessException businessException)
+                {
+                    businessException.printStackTrace();
+                }
                 this.reloadTable();
             }
         }

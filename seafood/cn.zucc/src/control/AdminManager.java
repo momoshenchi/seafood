@@ -192,9 +192,9 @@ public class AdminManager
 
     }
 
-    public void modifyType(BeanType bt, String description) throws BusinessException
+    public void modifyType(BeanType bt) throws BusinessException
     {
-        if (description == null || "".equals(description))
+        if (bt.getDescription() == null || "".equals(bt.getDescription()))
         {
             throw new BusinessException("please input description");
         }
@@ -204,7 +204,7 @@ public class AdminManager
             con = DBUtil.getConnection();
             String sql = "update foodtype set description = ?  where typeid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, description);
+            pst.setString(1, bt.getDescription());
             pst.setInt(2, bt.getTypeid());
             pst.executeUpdate();
             pst.close();
@@ -228,7 +228,7 @@ public class AdminManager
             }
         }
     }
-    public void delType(BeanType bt)
+    public void delType(BeanType bt) throws BusinessException
     {
         java.sql.Connection con = null;
         try
@@ -382,6 +382,10 @@ public class AdminManager
         {
             throw new BusinessException("please input vipprice");
         }
+        if(vipprice >price )
+        {
+            throw new BusinessException("vipprice is not allowed to be high than price");
+        }
         if (spec == null || "".equals(spec))
         {
             throw new BusinessException("please input spec");
@@ -453,6 +457,48 @@ public class AdminManager
             {
                 throwables.printStackTrace();
             }
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public  void  modifyCommodity(BeanCommodity bc) throws BusinessException
+    {
+        if (bc.getSpec() == null || "".equals(bc.getSpec()))
+        {
+            throw new BusinessException("please input spec");
+        }
+        java.sql.Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "update  commodity  set  price = ? , vipprice = ?, remain_number = ? , spec =? ," +
+                    "detail = ? ,picture = ? where  commodityid = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setDouble(1,bc.getPrice());
+            pst.setDouble(2,bc.getVipprice());
+            pst.setInt(3,bc.getRemain_number());
+            pst.setString(4,bc.getSpec());
+            pst.setString(5,bc.getDetail());
+            pst.setString(6,bc.getPicture());
+            pst.setInt(7, bc.getCommodityid());
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         finally
@@ -599,7 +645,7 @@ public class AdminManager
         {
             throw new BusinessException("please input number");
         }
-        java.sql.Connection con = null;
+        Connection con = null;
         int adminid = BeanAdmin.currentadmin.getAdminid();
         try
         {
@@ -612,7 +658,7 @@ public class AdminManager
             if (rs.next())
             {
                 commodityid = rs.getInt(1);
-                sql = "insert into  purchase(commodityid,number,patatus,adminid,purchasedate,commodityname) values" +
+                sql = "insert into  purchase(commodityid,number,pstatus,adminid,purchasedate,commodityname) values" +
                         "(?,?,?,?,?,?)";
                 pst = con.prepareStatement(sql);
                 pst.setInt(1, commodityid);

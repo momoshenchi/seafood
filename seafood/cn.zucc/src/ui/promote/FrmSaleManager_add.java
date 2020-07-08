@@ -94,6 +94,10 @@ public class FrmSaleManager_add extends JDialog implements ActionListener
 
     public Integer getComid()
     {
+        if(edtcommodityid.getText() == null||"".equals(edtcommodityid.getText()))
+        {
+            return 0;
+        }
         return Integer.parseInt(edtcommodityid.getText());
     }
 }

@@ -82,16 +82,18 @@ public class FrmCouManager extends JDialog implements ActionListener
         }
         else if (e.getSource() == this.btnModify)
         {
-            int i=this.dataTable.getSelectedRow();
-            if(i<0) {
-                JOptionPane.showMessageDialog(null,  "请选择coupon","提示",JOptionPane.ERROR_MESSAGE);
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择coupon", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            BeanCoupon p=this.pubs.get(i);
-            if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            BeanCoupon p = this.pubs.get(i);
+            FrmCouManager_mod mod = new FrmCouManager_mod(this, "modify", true, p);
+            mod.setVisible(true);
+            if (mod.getDetail() != null)
             {
-                (new PromoteManager()).modifyCoupon(p);
-                this.reloadTable();
+                reloadTable();
             }
         }
         else if (e.getSource() == this.btnDelete)

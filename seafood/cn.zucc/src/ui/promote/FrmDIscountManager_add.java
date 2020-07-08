@@ -1,29 +1,29 @@
-package ui.root;
+package ui.promote;
 
-import control.AdminManager;
 import control.PromoteManager;
 import util.BaseException;
-import util.BusinessException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FrmPurManager_add extends JDialog implements ActionListener
+public class FrmDIscountManager_add  extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
-    private JLabel labelnumber = new JLabel("Number");
-    private JLabel labelcommodityname = new JLabel("Name ");
+
+    private JLabel labelcommodityid = new JLabel("commodityid ");
+    private JLabel labeldiscountid = new JLabel("discountid");
 
 
-    private JTextField edtnumber = new JTextField(16);
-    private JTextField edtcommodityname = new JTextField(16);
+    private JTextField edtcommodityid = new JTextField(20);
+    private JTextField edtdiscountid = new JTextField(20);
 
-    public FrmPurManager_add(JDialog f, String s, boolean b)
+
+    public FrmDIscountManager_add(JDialog f, String s, boolean b)
     {
         super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -31,12 +31,13 @@ public class FrmPurManager_add extends JDialog implements ActionListener
         toolBar.add(btnCancel);
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
 
-        workPane.add(labelcommodityname);
-        workPane.add(edtcommodityname);
-        workPane.add(labelnumber);
-        workPane.add(edtnumber);
+        workPane.add(labeldiscountid);
+        workPane.add(edtdiscountid);
+        workPane.add(labelcommodityid);
+        workPane.add(edtcommodityid);
+
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(260, 140);
+        this.setSize(320, 240);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -58,16 +59,20 @@ public class FrmPurManager_add extends JDialog implements ActionListener
         }
         else if (e.getSource() == this.btnOk)
         {
-            if(edtnumber.getText() == null||"".equals(edtnumber.getText()))
+            if(edtdiscountid.getText() == null||"".equals(edtdiscountid.getText()))
             {
-                JOptionPane.showMessageDialog(null, "please input number", "提示", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "please input discountid", "提示", JOptionPane.ERROR_MESSAGE);
+            }
+            if (edtcommodityid.getText() == null||"".equals(edtcommodityid.getText()))
+            {
+                JOptionPane.showMessageDialog(null, "please input commodityid", "提示", JOptionPane.ERROR_MESSAGE);
             }
             try
             {
-                (new AdminManager()).addPurchase(edtcommodityname.getText(), Integer.parseInt(edtnumber.getText()));
+                (new PromoteManager()).addDiscount( Integer.parseInt(edtdiscountid.getText()),Integer.parseInt(edtcommodityid.getText()));
                 this.setVisible(false);
             }
-            catch (BusinessException e1)
+            catch (BaseException e1)
             {
                 JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }
@@ -75,8 +80,12 @@ public class FrmPurManager_add extends JDialog implements ActionListener
 
     }
 
-    public String getCommodityname()
+    public int getDiscountid()
     {
-        return edtcommodityname.getText();
+        if(edtdiscountid.getText() == null||"".equals(edtdiscountid.getText()))
+        {
+            return  0;
+        }
+        return Integer.parseInt(edtdiscountid.getText());
     }
 }

@@ -77,16 +77,18 @@ public class FrmDisRuleManager extends JDialog implements ActionListener
         }
         else if(e.getSource()==this.btnModify)
         {
-            int i=this.dataTable.getSelectedRow();
-            if(i<0) {
-                JOptionPane.showMessageDialog(null,  "请选择discount","提示",JOptionPane.ERROR_MESSAGE);
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择coupon", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            BeanDiscount p=this.pubs.get(i);
-            if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            BeanDiscount p = this.pubs.get(i);
+            FrmDisRuleManager_mod mod = new FrmDisRuleManager_mod(this, "modify", true, p);
+            mod.setVisible(true);
+            if (mod.getDetail() != null)
             {
-                (new PromoteManager()).modifyDiscountRule(p);
-                this.reloadTable();
+                reloadTable();
             }
         }
         else if(e.getSource()==this.btnDelete)
@@ -100,7 +102,7 @@ public class FrmDisRuleManager extends JDialog implements ActionListener
             BeanDiscount p = this.pubs.get(i);
             if (JOptionPane.showConfirmDialog(this, "确定删除吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                (new PromoteManager()).delDiscount(p);
+                (new PromoteManager()).delDiscountRule(p);
                 this.reloadTable();
             }
         }

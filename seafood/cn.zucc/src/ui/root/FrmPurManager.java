@@ -55,6 +55,9 @@ public class FrmPurManager extends JDialog implements ActionListener
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         btnAdd.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        btnAddcom.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        btnModifyrev.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        btnModifyput.setFont(new Font("微软雅黑", Font.BOLD, 16));
         toolBar.add(btnAdd);
         toolBar.add(btnModifyrev);
         toolBar.add(btnModifyput);
