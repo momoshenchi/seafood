@@ -1,5 +1,6 @@
 package control;
 
+import model.customer.BeanCart;
 import model.customer.BeanDetailOrder;
 import model.customer.BeanOrder;
 import model.customer.BeanUser;
@@ -547,82 +548,89 @@ public class UserManager
 
      */
     //加入购物车,为初始价
-    public  void userShop (int commodityid , int number ,double price )
+    //这边和按钮相关
+    public  void addCart (int commodityid , int number ,double price ,double vipprice)
     {
         int userid = BeanUser.currentLoginUser.getUserid();
         Connection con = null;
         try
         {
             con = DBUtil.getConnection();
-            String sql = "select  max(orderid) from orders where userid = ? and orderstatus = ? ";
+            String sql="insert  into cart(commodityid,number,price," +
+                    "userid,vipprice) values(?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, userid);
-            pst.setString(2,"购物车");
-            ResultSet rs = pst.executeQuery();
-            int orderid=1;
-            if(rs.next())
+            pst.setInt(1,commodityid);
+            pst.setInt(2,number);
+            pst.setDouble(3,price);
+            pst.setInt(4, userid);
+            pst.setDouble(5,vipprice);
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
             {
-                orderid=rs.getInt(1);
-            }
-            else
-            {
-                sql="insert into orders(userid,ori_amount,set_amount,couponid,order_time,addressid,orderstatus) " +
-                        "values (?,0,0,0,null,0,?)";
-                pst = con.prepareStatement(sql);
-                pst.setInt(1,userid);
-                pst.setString(2,"购物车");
-                pst.executeUpdate();
-                pst.close();
-                sql="select max(orderid) from orders where userid = ? and orderstatus = ?";
-                pst = con.prepareStatement(sql);
-                pst.setInt(1,userid);
-                pst.setString(2,"购物车");
-                rs=pst.executeQuery();
-                if(rs.next())
+                try
                 {
-                    orderid=rs.getInt(1);
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
                 }
             }
-            rs.close();
+        }
+    }
+    public void modifyCart(BeanCart bc)
+    {
+        int userid = BeanUser.currentLoginUser.getUserid();
+        Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql="update  cart set number = ? where userid = ? and commodityid = ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1,bc.getNumber());
+            pst.setInt(2, bc.getUserid());
+            pst.setInt(3,bc.getCommodityid());
+            pst.executeUpdate();
             pst.close();
-            sql="select  c.discountid ,discount from commodity_discount c,discount_rule d where " +
-                    " c.discountid = d.discountid and commodityid = ? ";
-            pst = con.prepareStatement(sql);
-            pst.setInt(1,commodityid);
-            rs=pst.executeQuery();
-            double discount =0;
-            int discountid =0 ;
-            if(rs.next())
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
             {
-                discountid=rs.getInt(1);
-                discount=rs.getDouble(2);
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
             }
-            rs.close();
-            pst.close();
-            double saleprice =0;
-            int saleid=0;
-            sql="select saleid , saleprice from sale where commodityid = ? ";
-            pst = con.prepareStatement(sql);
-            pst.setInt(1,commodityid);
-            rs=pst.executeQuery();
-            if(rs.next())
-            {
-                saleid=rs.getInt(1);
-                saleprice=rs.getDouble(2);
-            }
-            sql="insert  into order_detail(orderid,commodityid,number,price,discount,discountid," +
-                    "userid,saleid , saleprice) values(" +
-                "?,?,?,?,?,?,?,?,?)";
-            pst = con.prepareStatement(sql);
-            pst.setInt(1,orderid);
-            pst.setInt(2,commodityid);
-            pst.setInt(3,number);
-            pst.setDouble(4,price);
-            pst.setDouble(5,discount);
-            pst.setInt(6,discountid);
-            pst.setInt(7, userid);
-            pst.setInt(8, saleid);
-            pst.setDouble(9,saleprice);
+        }
+    }
+    public  void  delCart(BeanCart bc)
+    {
+        int userid = BeanUser.currentLoginUser.getUserid();
+        Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql="delete  from cart where userid = ? and commodityid = ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, bc.getUserid());
+            pst.setInt(2,bc.getCommodityid());
             pst.executeUpdate();
             pst.close();
         }
@@ -652,19 +660,22 @@ public class UserManager
         try
         {
             con = DBUtil.getConnection();
-            String sql = "select  orderid,number ,price  , discount , saleprice from order_detail where userid =? and ostatus = ?  ";
+            String sql = "select  orderid,number ,price  , discount , saleprice from cart where userid = ?  ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, userid);
-            pst.setString(2,"购物车");
             ResultSet rs = pst.executeQuery();
-            int number=0,orderid =0;
-            double price =0.0,saleprice =0.0,discount=0.0;
-            if(rs.next())
+            sql="select  discount ,min_number ,start_date,end_date from commodity_discount ,discount_rule where commodityid = ? ";
+            sql="select   saleprice , maxnumber ,start_date,end_date from sale where commodityid = ? ";
+            sql="insert  into order_detail() values()";
+            sql="insert  into orders() values()";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1,rs.getInt(1));
+            while(rs.next())
             {
-                number=rs.getInt(1);
-                price=rs.getDouble(2);
-                discount=rs.getDouble(3);
-                saleprice=rs.getDouble(4);
+                pst.setInt(1,rs.getInt(1));
+                pst.setInt(1,rs.getInt(1));
+                pst.setInt(1,rs.getInt(1));
+                pst.setInt(1,rs.getInt(1));
             }
             else
             {
