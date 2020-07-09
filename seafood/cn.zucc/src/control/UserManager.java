@@ -10,6 +10,8 @@ import util.BusinessException;
 import util.DBUtil;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -200,21 +202,21 @@ public class UserManager
 
 
     public void changePwd(BeanUser user, String oldPwd, String newPwd,
-                          String newPwd2) throws BaseException
+                          String newPwd2) throws BusinessException
     {
         if (user == null)
         {
-            throw new BaseException("user is null");
+            throw new BusinessException("user is null");
         }
         if (newPwd == null || newPwd2 == null || "".equals(newPwd) || "".equals(newPwd2) || !newPwd.equals(newPwd2))
         {
-            throw new BaseException("password is null");
+            throw new BusinessException("password is null");
         }
         String pwd = user.getPwd();
         int userid = user.getUserid();
         if (!oldPwd.equals(pwd))
         {
-            throw new BaseException("password is wrong");
+            throw new BusinessException("password is wrong");
         }
         java.sql.Connection con = null;
         java.sql.PreparedStatement pst = null;
@@ -228,12 +230,12 @@ public class UserManager
             ResultSet rs = pst.executeQuery();
             if (!rs.next())
             {
-                throw new BaseException("userid is not exist");
+                throw new BusinessException("userid is not exist");
             }
             String p = rs.getString(1);
             if (!p.equals(oldPwd))
             {
-                throw new BaseException("pwd is wrong");
+                throw new BusinessException("pwd is wrong");
             }
             rs.close();
             pst.close();
@@ -319,10 +321,10 @@ public class UserManager
             String sql = "select  * from users where userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, userid);
-            ResultSet rs=pst.executeQuery();
-            if(rs.next())
+            ResultSet rs = pst.executeQuery();
+            if (rs.next())
             {
-                BeanUser bu=new BeanUser();
+                BeanUser bu = new BeanUser();
                 bu.setUserid(rs.getInt(1));
                 bu.setUsername(rs.getString(2));
                 bu.setSex(rs.getString(3));
@@ -357,7 +359,7 @@ public class UserManager
                 }
             }
         }
-        return  null;
+        return null;
     }
 
     public void addUserVIP(int num)
@@ -391,14 +393,13 @@ public class UserManager
                 }
                 catch (SQLException e)
                 {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         }
     }
 
-    public List<BeanCoupon> loadAllUserCoupon()
+    public List<BeanCoupon> loadUserCoupon()
     {
         List<BeanCoupon> l = new ArrayList<>();
         int userid = BeanUser.currentLoginUser.getUserid();
@@ -446,10 +447,11 @@ public class UserManager
         }
         return l;
     }
-    public List<BeanDetailOrder>loadUserDetailOrders()
+
+    public List<BeanDetailOrder> loadUserDetailOrders()
     {
         Connection con = null;
-        List<BeanDetailOrder>l=new ArrayList<>();
+        List<BeanDetailOrder> l = new ArrayList<>();
         int userid = BeanUser.currentLoginUser.getUserid();
         try
         {
@@ -457,17 +459,21 @@ public class UserManager
             String sql = "select  * from order_detail where userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, userid);
-            ResultSet rs=pst.executeQuery();
-            while(rs.next())
+            ResultSet rs = pst.executeQuery();
+            while (rs.next())
             {
-                BeanDetailOrder bu=new BeanDetailOrder();
+                BeanDetailOrder bu = new BeanDetailOrder();
                 bu.setOrderid(rs.getInt(1));
                 bu.setCommodityid(rs.getInt(2));
-                bu.setNumber(rs.getInt(3));
-                bu.setPrice(rs.getDouble(4));
-                bu.setDiscount(rs.getDouble(5));
-                bu.setDiscountid(rs.getInt(6));
-                bu.setUserid(rs.getInt(7));
+                bu.setUserid(rs.getInt(3));
+                bu.setNumber(rs.getInt(4));
+                bu.setPrice(rs.getDouble(5));
+                bu.setVipprice(rs.getDouble(6));
+                bu.setDiscountid(rs.getInt(7));
+                bu.setDiscount(rs.getDouble(8));
+                bu.setSaleid(rs.getInt(9));
+                bu.setSaleprice(rs.getDouble(10));
+                bu.setOrderstatus(rs.getString(11));
                 l.add(bu);
             }
             rs.close();
@@ -491,12 +497,13 @@ public class UserManager
                 }
             }
         }
-        return  l;
+        return l;
     }
+
     public List<BeanOrder> loadUserOrders()
     {
         Connection con = null;
-        List<BeanOrder>l=new ArrayList<>();
+        List<BeanOrder> l = new ArrayList<>();
         int userid = BeanUser.currentLoginUser.getUserid();
         try
         {
@@ -504,10 +511,10 @@ public class UserManager
             String sql = "select  * from orders where userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, userid);
-            ResultSet rs=pst.executeQuery();
-            while(rs.next())
+            ResultSet rs = pst.executeQuery();
+            while (rs.next())
             {
-                BeanOrder bu=new BeanOrder();
+                BeanOrder bu = new BeanOrder();
                 bu.setOrderid(rs.getInt(1));
                 bu.setUserid(rs.getInt(2));
                 bu.setOri_amount(rs.getDouble(3));
@@ -539,31 +546,78 @@ public class UserManager
                 }
             }
         }
-        return  l;
+        return l;
     }
+
+    public List<BeanCart> loadUserCart()
+    {
+        Connection con = null;
+        List<BeanCart> l = new ArrayList<>();
+        int userid = BeanUser.currentLoginUser.getUserid();
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "select  * from cart where userid = ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, userid);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next())
+            {
+                BeanCart bu = new BeanCart();
+                bu.setCommodityid(rs.getInt(1));
+                bu.setNumber(rs.getInt(2));
+                bu.setPrice(rs.getDouble(3));
+                bu.setUserid(rs.getInt(4));
+                bu.setVipprice(rs.getDouble(5));
+                l.add(bu);
+            }
+            rs.close();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return l;
+    }
+
     // 消费流程
-    /*1.判断是否为vip
+    /*1.判断是否为vip,最后搞
     2.找到促销号,折扣号
 
 
      */
     //加入购物车,为初始价
     //这边和按钮相关
-    public  void addCart (int commodityid , int number ,double price ,double vipprice)
+    public void addCart(int commodityid, int number, double price, double vipprice)
     {
         int userid = BeanUser.currentLoginUser.getUserid();
         Connection con = null;
         try
         {
             con = DBUtil.getConnection();
-            String sql="insert  into cart(commodityid,number,price," +
+            String sql = "insert  into cart(commodityid,number,price," +
                     "userid,vipprice) values(?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1,commodityid);
-            pst.setInt(2,number);
-            pst.setDouble(3,price);
+            pst.setInt(1, commodityid);
+            pst.setInt(2, number);
+            pst.setDouble(3, price);
             pst.setInt(4, userid);
-            pst.setDouble(5,vipprice);
+            pst.setDouble(5, vipprice);
             pst.executeUpdate();
             pst.close();
         }
@@ -586,6 +640,7 @@ public class UserManager
             }
         }
     }
+
     public void modifyCart(BeanCart bc)
     {
         int userid = BeanUser.currentLoginUser.getUserid();
@@ -593,11 +648,11 @@ public class UserManager
         try
         {
             con = DBUtil.getConnection();
-            String sql="update  cart set number = ? where userid = ? and commodityid = ? ";
+            String sql = "update  cart set number = ? where userid = ? and commodityid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1,bc.getNumber());
+            pst.setInt(1, bc.getNumber());
             pst.setInt(2, bc.getUserid());
-            pst.setInt(3,bc.getCommodityid());
+            pst.setInt(3, bc.getCommodityid());
             pst.executeUpdate();
             pst.close();
         }
@@ -620,17 +675,18 @@ public class UserManager
             }
         }
     }
-    public  void  delCart(BeanCart bc)
+
+    public void delCart(BeanCart bc)
     {
         int userid = BeanUser.currentLoginUser.getUserid();
         Connection con = null;
         try
         {
             con = DBUtil.getConnection();
-            String sql="delete  from cart where userid = ? and commodityid = ? ";
+            String sql = "delete  from cart where userid = ? and commodityid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, bc.getUserid());
-            pst.setInt(2,bc.getCommodityid());
+            pst.setInt(2, bc.getCommodityid());
             pst.executeUpdate();
             pst.close();
         }
@@ -653,64 +709,92 @@ public class UserManager
             }
         }
     }
-    public void settleAccounts() throws BusinessException
+//点击购买按钮
+    public void addDetailOrder() throws BusinessException
     {
         int userid = BeanUser.currentLoginUser.getUserid();
         Connection con = null;
+        List<BeanDetailOrder> l = new ArrayList<>();
+        List<BeanCart> beancart = loadUserCart();
+        if (beancart == null)
+        {
+            throw new BusinessException("there are no commodities");
+        }
+        for (int i = 0; i < beancart.size(); ++i)
+        {
+            BeanCart tem = beancart.get(i);
+            BeanDetailOrder bc = new BeanDetailOrder();
+            bc.setCommodityid(tem.getCommodityid());
+            bc.setNumber(tem.getNumber());
+            bc.setPrice(tem.getPrice());
+            bc.setVipprice(tem.getVipprice());
+            bc.setUserid(userid);
+            l.add(bc);
+        }
+        searchAll(l);
         try
         {
             con = DBUtil.getConnection();
-            String sql = "select  orderid,number ,price  , discount , saleprice from cart where userid = ?  ";
+            int orderid=1;
+            String sql="select max(orderid) from order_detail";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, userid);
-            ResultSet rs = pst.executeQuery();
-            sql="select  discount ,min_number ,start_date,end_date from commodity_discount ,discount_rule where commodityid = ? ";
-            sql="select   saleprice , maxnumber ,start_date,end_date from sale where commodityid = ? ";
-            sql="insert  into order_detail() values()";
-            sql="insert  into orders() values()";
-            pst = con.prepareStatement(sql);
-            pst.setInt(1,rs.getInt(1));
-            while(rs.next())
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
             {
-                pst.setInt(1,rs.getInt(1));
-                pst.setInt(1,rs.getInt(1));
-                pst.setInt(1,rs.getInt(1));
-                pst.setInt(1,rs.getInt(1));
-            }
-            else
-            {
-                throw new BusinessException("no orders");
+                orderid=rs.getInt(1);
             }
             rs.close();
             pst.close();
-            int addressid=0;
-            sql="select addressid from address where userid = ? ";
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, userid);
-            rs = pst.executeQuery();
-            if(rs.next())
-            {
-                addressid=rs.getInt(1);
-            }
-            double ori_amount=number*price;
-            double m1=0.0,m2=0.0;
-            if(discount!=0.0)
-            {
-                m1=number*price*discount;
-            }
-            if(saleprice!=0.0)
-            {
-                m2=number*saleprice;
-            }
-            double set_amount =Math.min(m1,m2);
-            long now =System.currentTimeMillis();
-            sql="update orders set ori_amount = ?,set_amount = ? ,order_time = ? ,addressid = ? ";
-            pst = con.prepareStatement(sql);
-            pst.setDouble(1,ori_amount);
-            pst.setDouble(2,set_amount);
-            pst.setTimestamp(3,new Timestamp(now));
-            pst.setInt(4,addressid);
 
+            double sum=0;
+            double set_amount = 0;
+            for (int i = 0; i < l.size(); ++i)
+            {
+                BeanDetailOrder bo=l.get(i);
+                sql = "insert  into order_detail(orderid,commodityid,userid,number,price,vipprice,discountid,discount," +
+                        "saleid,saleprice,orderstatus) values(?,?,?,?,?,?,?,?,?,?,?)";
+                pst = con.prepareStatement(sql);
+                pst.setInt(1, orderid);
+                pst.setInt(2,bo.getCommodityid());
+                pst.setInt(3,bo.getUserid());
+                int number=bo.getNumber();
+                double price =bo.getPrice();
+                sum+=number*price;
+                pst.setInt(4,number);
+                pst.setDouble(5,price);
+                double discount =bo.getDiscount();
+                double vip =bo.getVipprice();
+                double saleprice=bo.getSaleprice();
+                double m1=0x7ffff,m2=0x7ffff,m3=0x7ffff;
+                if (discount != 0.0)
+                {
+                     m1 = number * price * discount;
+                }
+                if (saleprice != 0.0)
+                {
+                    m2 = number * saleprice;
+                }
+                if(vip!=0.0)
+                {
+                    m3=number*vip;
+                }
+                set_amount += Math.min(Math.min(m1, m2),m3);
+                pst.setDouble(6,vip);
+                pst.setInt(7,bo.getDiscountid());
+                pst.setDouble(8,discount);
+                pst.setInt(9,bo.getSaleid());
+                pst.setDouble(10,saleprice);
+                pst.setString(11,"待支付");
+            }
+
+            sql = "insert  into orders(orderid,userid,ori_amount,set_amount,couponid,order_time,addressid,orderstatus) " +
+                    "values(?,?,?,?,0,null,0,?)";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, orderid);
+            pst.setInt(2, userid);
+            pst.setDouble(3,sum);
+            pst.setDouble(4,set_amount);
+            pst.setString(8,"待支付");
             pst.executeUpdate();
             pst.close();
         }
@@ -733,6 +817,149 @@ public class UserManager
             }
         }
     }
+    public void pay(BeanOrder bo ,int couponid ,String ordertime,int addressid)
+    {
+        int userid = BeanUser.currentLoginUser.getUserid();
+        Connection con = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date order_time = null;
+        try
+        {
+            order_time = sdf.parse(ordertime);
+        }
+        catch (ParseException e1)
+        {
+            e1.printStackTrace();
+        }
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "update orders  set couponid = ? ,order_time = ? ,addressid = ?, " +
+                    "orderstatus = ? where orderid = ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, couponid);
+            pst.setTimestamp(2,new Timestamp(order_time.getTime()));
+            pst.setInt(3, addressid);
+            pst.setString(4,"已支付");
+            pst.setInt(5, bo.getOrderid());
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public void searchAll(List<BeanDetailOrder> l)
+    {
+        Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            for (int i = 0; i < l.size(); ++i)
+            {
+                BeanDetailOrder s = l.get(i);
+                String sql = "select r.discountid, discount ,min_number ,r.start_date,r.end_date from commodity_discount c ," +
+                        "discount_rule r where r.discountid = c.discountid and c.commodityid = ? ";
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.setInt(1, s.getCommodityid());
+                ResultSet rs = pst.executeQuery();
+                long now = System.currentTimeMillis();
+                if (rs.next())
+                {
+                    s.setDiscountid(rs.getInt(1));
+                    double discount = rs.getDouble(2);
+                    if (s.getNumber() >= rs.getInt(3) && now > rs.getTimestamp(4).getTime() && now < rs.getTimestamp(5).getTime())
+                    {
+                        s.setDiscount(discount);
+                    }
+                    else
+                    {
+                        s.setDiscount(0.0);
+                    }
+                }
+                else
+                {
+                    s.setDiscountid(0);
+                    s.setDiscount(0.0);
+                }
+                rs.close();
+                pst.close();
+                sql = "select   saleid, saleprice , maxnumber ,start_date,end_date from sale where commodityid = ? ";
+                pst = con.prepareStatement(sql);
+                pst.setInt(1, s.getCommodityid());
+                rs = pst.executeQuery();
+                now = System.currentTimeMillis();
+                if (rs.next())
+                {
+                    s.setSaleid(rs.getInt(1));
+                    double saleprice = rs.getDouble(2);
+                    if (s.getNumber() <= rs.getInt(3) && now > rs.getTimestamp(4).getTime() && now < rs.getTimestamp(5).getTime())
+                    {
+                        s.setSaleprice(saleprice);
+                    }
+                    else
+                    {
+                        s.setSaleprice(0.0);
+                    }
+                }
+                else
+                {
+                    s.setSaleid(0);
+                    s.setSaleprice(0.0);
+                }
+                rs.close();
+                pst.close();
+                sql="select isvip from users where userid = ? ";
+                pst = con.prepareStatement(sql);
+                pst.setInt(1, s.getUserid());
+                rs = pst.executeQuery();
+                if(rs.next())
+                {
+                     String str=rs.getString(1);
+                     if("false".equals(str))
+                     {
+                         s.setVipprice(0.0);
+                     }
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static void main(String[] args)
     {
         UserManager em = new UserManager();

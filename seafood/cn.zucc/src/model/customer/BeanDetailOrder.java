@@ -2,12 +2,58 @@ package model.customer;
 
 public class BeanDetailOrder {
     private int orderid;
-    private int commodityid;
+    private int commodityid;private  int userid;
     private int number;
     private double price;
-    private double discount;
+    private double vipprice;
+
     private int discountid;
-    private  int userid;
+    private double discount;
+
+    public double getVipprice()
+    {
+        return vipprice;
+    }
+
+    public void setVipprice(double vipprice)
+    {
+        this.vipprice = vipprice;
+    }
+
+
+    private  int saleid;
+    private double saleprice;
+    private  String orderstatus;
+
+    public int getSaleid()
+    {
+        return saleid;
+    }
+
+    public void setSaleid(int saleid)
+    {
+        this.saleid = saleid;
+    }
+
+    public double getSaleprice()
+    {
+        return saleprice;
+    }
+
+    public void setSaleprice(double saleprice)
+    {
+        this.saleprice = saleprice;
+    }
+
+    public String getOrderstatus()
+    {
+        return orderstatus;
+    }
+
+    public void setOrderstatus(String orderstatus)
+    {
+        this.orderstatus = orderstatus;
+    }
 
     public int getUserid() {
         return userid;
