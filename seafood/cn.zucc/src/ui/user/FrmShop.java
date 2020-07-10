@@ -1,25 +1,13 @@
-package ui;
+package ui.user;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.GridLayout;
+import control.ReadImage;
+import model.food.BeanCommodity;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import control.UserManager;
-import model.food.BeanCommodity;
-import model.promote.BeanCoupon;
-import control.AdminManager;
-import control.ReadImage;
 
 public class FrmShop extends JDialog implements ActionListener{
 

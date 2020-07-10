@@ -1,10 +1,10 @@
 package ui;
 
 
+import ui.user.FrmUser;
+import ui.user.FrmUser2;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 public class FrmMain extends JFrame  {
@@ -22,7 +22,10 @@ public class FrmMain extends JFrame  {
         dlgLogin.setVisible(true);
 
         if(flag==0)
-            new FrmUser();
+        {
+            FrmUser2 imageFrame = new FrmUser2();
+            imageFrame.addImageByRepaint();
+        }
         else if(flag==1)
         {
             dlga = new FrmAd(fadmin, "Admin Login", true);

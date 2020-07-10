@@ -1,4 +1,4 @@
-package ui;
+package ui.user;
 
 
 import control.ReadImage;
@@ -16,12 +16,12 @@ import javax.swing.*;
 public class FrmUser2 extends JFrame implements ActionListener{
 	private Dimension frameSize = new Dimension(1600, 840);
 	private ImageIcon imageIcon = ReadImage.read("12.jpg");
-	 	private JButton Button1= new JButton("浏览菜谱");
+	 	private JButton Buttonmenu= new JButton("浏览菜谱");
 	    private JButton Button2= new JButton("生鲜购买");
-	    private JButton Button3= new JButton("查看历史");
-	    private JButton Button4= new JButton("购物评价");
-        private JButton Button5= new JButton("个人信息");
-	    private JButton Button6= new JButton("退出菜单");
+	    private JButton Buttonhistory= new JButton("查看历史");
+	    private JButton Buttoncomment= new JButton("购物评价");
+        private JButton buttoninfo= new JButton("个人信息");
+	    private JButton Buttonexit= new JButton("退出菜单");
 	    private JPanel panel =new JPanel();
 	    private JPanel panel2 =new JPanel();
 	    private Box b=Box.createVerticalBox();
@@ -76,29 +76,29 @@ public class FrmUser2 extends JFrame implements ActionListener{
 //	b.setSize(800, 200);
 // 怎么设置按钮大小
     b.add(Box.createVerticalStrut(30));
-    Button1.setFont(new Font("微软雅黑", Font.BOLD, 25));
-    b.add( Button1 );
-    this.Button1.addActionListener(this);
+    Buttonmenu.setFont(new Font("微软雅黑", Font.BOLD, 25));
+    b.add( Buttonmenu );
+    this.Buttonmenu.addActionListener(this);
     b.add(Box.createVerticalStrut(50));
     Button2.setFont(new Font("微软雅黑", Font.BOLD, 25));
     b.add( Button2 );
     this.Button2.addActionListener(this);
     b.add(Box.createVerticalStrut(50));
-    Button3.setFont(new Font("微软雅黑", Font.BOLD, 25));
-    b.add( Button3 );
-    this.Button3.addActionListener(this);
+    Buttonhistory.setFont(new Font("微软雅黑", Font.BOLD, 25));
+    b.add( Buttonhistory );
+    this.Buttonhistory.addActionListener(this);
     b.add(Box.createVerticalStrut(50));
-    Button4.setFont(new Font("微软雅黑", Font.BOLD, 25));
-    b.add( Button4 );
-    this.Button4.addActionListener(this);
+    Buttoncomment.setFont(new Font("微软雅黑", Font.BOLD, 25));
+    b.add( Buttoncomment );
+    this.Buttoncomment.addActionListener(this);
     b.add(Box.createVerticalStrut(50));
-    Button5.setFont(new Font("微软雅黑", Font.BOLD, 25));
-    b.add( Button5 );
-    this.Button5.addActionListener(this);
+    buttoninfo.setFont(new Font("微软雅黑", Font.BOLD, 25));
+    b.add( buttoninfo );
+    this.buttoninfo.addActionListener(this);
       b.add(Box.createVerticalStrut(50));
-      Button6.setFont(new Font("微软雅黑", Font.BOLD, 25));
-      b.add( Button6 );
-      this.Button6.addActionListener(this);
+      Buttonexit.setFont(new Font("微软雅黑", Font.BOLD, 25));
+      b.add( Buttonexit );
+      this.Buttonexit.addActionListener(this);
     b.setFont(font);
     this.getContentPane().add(b);
 //    this.getContentPane().setFont(font);
@@ -106,7 +106,7 @@ public class FrmUser2 extends JFrame implements ActionListener{
   }
   
   public void actionPerformed(ActionEvent e) {
-      if(e.getSource()==this.Button1)
+      if(e.getSource()==this.Buttonmenu)
       {
     	  
       }
@@ -114,21 +114,22 @@ public class FrmUser2 extends JFrame implements ActionListener{
       {
     	  
       }
-      else if(e.getSource()==this.Button3)
+      else if(e.getSource()==this.Buttonhistory)
       {
     	  
       }
-      else if(e.getSource()==this.Button4)
+      else if(e.getSource()==this.Buttoncomment)
       {
     	  
       }
-      else if(e.getSource()==this.Button5)
+      else if(e.getSource()==this.buttoninfo)
       {
-
+            FrmInfo fi=new FrmInfo(this,"个人信息",true);
+            fi.setVisible(true);
       }
-      else if(e.getSource()==this.Button6)
+      else if(e.getSource()==this.Buttonexit)
       {
-
+          System.exit(0);
       }
   }
   
