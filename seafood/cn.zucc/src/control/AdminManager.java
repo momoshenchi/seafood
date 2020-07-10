@@ -2,9 +2,7 @@ package control;
 
 import model.customer.BeanAddr;
 import model.customer.BeanUser;
-import model.food.BeanCommodity;
-import model.food.BeanMenu;
-import model.food.BeanType;
+import model.food.*;
 import model.promote.BeanCoupon;
 import model.promote.BeanDiscount;
 import model.promote.BeanSale;
@@ -164,9 +162,19 @@ public class AdminManager
         try
         {
             con = DBUtil.getConnection();
-            String sql = "insert into  foodtype(typename , description) values" +
-                    "(?,?)";
+            String sql="select * form foodtype where typename = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, typename);
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                throw new BusinessException("typename is already exist");
+            }
+            rs.close();
+            pst.close();
+            sql = "insert into  foodtype(typename , description) values" +
+                    "(?,?)";
+             pst = con.prepareStatement(sql);
             pst.setString(1, typename);
             pst.setString(2, description);
             pst.executeUpdate();
@@ -711,7 +719,189 @@ public class AdminManager
             }
         }
     }
-
+    public  void  addMenuCommodity(int commodityid , int menuid,String description) throws BusinessException
+    {
+        if(menuid<=0)
+        {
+            throw new BusinessException("please input menuname");
+        }
+        if(commodityid<=0)
+        {
+            throw new BusinessException("please input commidityid");
+        }
+        Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "select * from  menu where menuid = ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, menuid);
+            ResultSet rs = pst.executeQuery();
+            if (!rs.next())
+            {
+                throw new BusinessException("menuid is not exist");
+            }
+            sql="select  * from commodity where commodityid =? ";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, commodityid);
+            rs = pst.executeQuery();
+            if (!rs.next())
+            {
+                throw new BusinessException("commodityid is not exist");
+            }
+            sql="select  * from commodity_menu where commodityid = ?  and menuid = ? ";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, commodityid);
+            pst.setInt(2, menuid);
+            rs = pst.executeQuery();
+            if (rs.next())
+            {
+                throw new BusinessException("Recommend is already exist");
+            }
+            sql = "insert into  commodity_menu(commodityid,menuid,description) values(" +
+                    "?,?,?)";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, commodityid);
+            pst.setInt(2, menuid);
+            pst.setString(3, description);
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public  void  delMenuCommodity(BeanRecommend br)
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "delete from commodity_menu where commodityid = ? and menuid = ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, br.getCommodityid());
+            pst.setInt(2, br.getMenuid());
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public  List<BeanRecommend> loadAllRecommend()
+    {
+        List<BeanRecommend> l = new ArrayList<>();
+        Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "select  * from commodity_menu ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next())
+            {
+                BeanRecommend bm = new BeanRecommend();
+                bm.setCommodityid(rs.getInt(1));
+                bm.setMenuid(rs.getInt(2));
+                bm.setDescription(rs.getString(3));
+                l.add(bm);
+            }
+            rs.close();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return l;
+    }
+    public List<BeanUserRecommend>loadUserRecommend()
+    {
+        List<BeanUserRecommend> l = new ArrayList<>();
+        Connection con = null;
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "select c.commodityname ,c.price ,m.menuname ,m.ingredient  from commodity_menu h, menu m ,commodity c where m.menuid = h.menuid and " +
+                    "c.commodityid = h.commodityid ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next())
+            {
+                BeanUserRecommend bm = new BeanUserRecommend();
+                bm.setCommodityname(rs.getString(1));
+                bm.setPrice(rs.getDouble(2));
+                bm.setMenuname(rs.getString(3));
+                bm.setIngredient(rs.getString(4));
+                l.add(bm);
+            }
+            rs.close();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return l;
+    }
     public void addMenu(String menuname, String ingredient, String step, String picture) throws BusinessException
     {
         if (menuname == null || "".equals(menuname))
@@ -763,7 +953,6 @@ public class AdminManager
                 }
             }
         }
-
     }
 
     public void modifyMenu(BeanMenu bm) throws BusinessException
@@ -782,6 +971,7 @@ public class AdminManager
             pst.setString(1, bm.getIngredient());
             pst.setString(2, bm.getStep());
             pst.setString(3, bm.getPicture());
+            pst.setInt(4,bm.getMenuid());
             pst.executeUpdate();
             pst.close();
         }
@@ -900,7 +1090,7 @@ public class AdminManager
     //入库
     public void modifyPurchase(BeanPurchase bp) throws BusinessException
     {
-        java.sql.Connection con = null;
+        Connection con = null;
         try
         {
             con = DBUtil.getConnection();

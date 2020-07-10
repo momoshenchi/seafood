@@ -6,60 +6,65 @@ import util.BaseException;
 import util.BusinessException;
 import util.DBUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressManager {
-    public BeanAddr addAddr(String detail_add,String name,String phone)throws BusinessException
+public class AddressManager
+{
+    public BeanAddr addAddr(String detail_add, String name, String phone) throws BusinessException
     {
-        if(detail_add==null||"".equals(detail_add))
+        if (detail_add == null || "".equals(detail_add))
         {
             throw new BusinessException("detail is null");
         }
-        if(name==null||"".equals(name))
+        if (name == null || "".equals(name))
         {
             throw new BusinessException("name is null");
         }
-        if(phone==null||"".equals(phone))
+        if (phone == null || "".equals(phone))
         {
             throw new BusinessException("phone is null");
         }
-        java.sql.Connection con=null;
+        java.sql.Connection con = null;
         int userid = BeanUser.currentLoginUser.getUserid();
-        try {
+        try
+        {
             con = DBUtil.getConnection();
             String sql = "select * from address where detail_add = ? and userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, detail_add);
             pst.setInt(2, userid);
-            ResultSet rs=pst.executeQuery();
-            if(rs.next())
+            ResultSet rs = pst.executeQuery();
+            if (rs.next())
             {
                 throw new BusinessException("detail_address is already exist");
             }
+            rs.close();
             pst.close();
-            sql="select max(addressid) from address  ";
-            pst=con.prepareStatement(sql);
-            rs=pst.executeQuery();
-            int addressid=1;
-            if(rs.next())
+            sql = "select max(addressid) from address  ";
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            int addressid = 1;
+            if (rs.next())
             {
-                addressid=rs.getInt(1)+1;
+                addressid = rs.getInt(1) + 1;
             }
             rs.close();
             pst.close();
-            sql="insert into address(addressid,userid,detail_add,contactname,phonenum) values(?,?, ? ,? ,?)";
-            pst=con.prepareStatement(sql);
-            pst.setInt(1, userid);
-            pst.setInt(2, addressid);
+            sql = "insert into address(addressid,userid,detail_add,contactname,phonenum) values(?,?, ? ,? ,?)";
+            pst = con.prepareStatement(sql);
+
+            pst.setInt(1, addressid);
+            pst.setInt(2, userid);
             pst.setString(3, detail_add);
             pst.setString(4, name);
             pst.setString(5, phone);
             pst.executeUpdate();
-            BeanAddr ba=new BeanAddr();
+            BeanAddr ba = new BeanAddr();
             ba.setAddressid(addressid);
             ba.setContactname(name);
             ba.setDetail_address(detail_add);
@@ -67,77 +72,105 @@ public class AddressManager {
             ba.setPhonenumber(phone);
             return ba;
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
         finally
         {
-            if(con!=null)
+            if (con != null)
             {
-                try {
+                try
+                {
                     con.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e)
+                {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         }
-        return  null;
+        return null;
 
     }
 
-    public List<BeanAddr> loadAllUserAddr(){
-        List<BeanAddr> result=new ArrayList<>();
-        java.sql.Connection con=null;
+    public List<BeanAddr> loadAllUserAddr()
+    {
+        List<BeanAddr> result = new ArrayList<>();
+        Connection con = null;
         int userid = BeanUser.currentLoginUser.getUserid();
-        try {
+        try
+        {
             con = DBUtil.getConnection();
             String sql = "select  * from address where userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1,userid);
-            ResultSet rs=pst.executeQuery();
-            while(rs.next())
+            pst.setInt(1, userid);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next())
             {
-                BeanAddr ba=new BeanAddr();
+                BeanAddr ba = new BeanAddr();
                 ba.setAddressid(rs.getInt(1));
                 ba.setUserid(rs.getInt(2));
-                ba.setContactname(rs.getString(3));
-                ba.setDetail_address(rs.getString(4));
+                ba.setDetail_address(rs.getString(3));
+                ba.setContactname(rs.getString(4));
                 ba.setPhonenumber(rs.getString(5));
                 result.add(ba);
             }
             rs.close();
             pst.close();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
         finally
         {
-            if(con!=null)
+            if (con != null)
             {
-                try {
+                try
+                {
                     con.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
+                }
+                catch (SQLException e)
+                {
                     e.printStackTrace();
                 }
             }
         }
-
-        return  result;
+        return result;
     }
-    public  void modifyAddr(BeanAddr br)
+
+    public void modifyAddr(BeanAddr br) throws BusinessException
     {
-        java.sql.Connection con=null;
+        if (br.getDetail_address() == null || "".equals(br.getDetail_address()))
+        {
+            throw new BusinessException("please input ingredient");
+        }
+        if (br.getContactname() == null || "".equals(br.getContactname()))
+        {
+            throw new BusinessException("please input contactname");
+        }
+        if (br.getPhonenumber() == null || "".equals(br.getPhonenumber()))
+        {
+            throw new BusinessException("please input phonenumber");
+        }
+        Connection con = null;
         int userid = BeanUser.currentLoginUser.getUserid();
-        try {
+        try
+        {
             con = DBUtil.getConnection();
-            String sql = "update address set detail_add =? and contactname =? and  phonenum = ? " +
-                    "where addressid = ? ";
+            String sql="select * from address where detail_add = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, br.getDetail_address());
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                throw new BusinessException("Detail_address is already exist");
+            }
+             sql = "update address set detail_add = ? , contactname = ? ,  phonenum = ? " +
+                    " where addressid = ? ";
+             pst = con.prepareStatement(sql);
             pst.setString(1, br.getDetail_address());
             pst.setString(2, br.getContactname());
             pst.setString(3, br.getPhonenumber());
@@ -145,27 +178,31 @@ public class AddressManager {
             pst.executeUpdate();
             pst.close();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
         finally
         {
-            if(con!=null)
+            if (con != null)
             {
-                try {
+                try
+                {
                     con.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
+                }
+                catch (SQLException e)
+                {
                     e.printStackTrace();
                 }
             }
         }
     }
-    public  void delAddr(BeanAddr br)
+
+    public void delAddr(BeanAddr br)
     {
-        java.sql.Connection con=null;
-        try {
+        java.sql.Connection con = null;
+        try
+        {
             con = DBUtil.getConnection();
             String sql = "delete from address  where addressid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
@@ -173,17 +210,20 @@ public class AddressManager {
             pst.executeUpdate();
             pst.close();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
         finally
         {
-            if(con!=null)
+            if (con != null)
             {
-                try {
+                try
+                {
                     con.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e)
+                {
                     e.printStackTrace();
                 }
             }

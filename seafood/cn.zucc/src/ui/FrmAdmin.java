@@ -4,9 +4,7 @@ import ui.promote.FrmCouManager;
 import ui.promote.FrmDisRuleManager;
 import ui.promote.FrmDiscountManager;
 import ui.promote.FrmSaleManager;
-import ui.root.FrmComManager;
-import ui.root.FrmPurManager;
-import ui.root.FrmTypeManager;
+import ui.root.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +20,8 @@ public class FrmAdmin extends JFrame implements ActionListener {
     private JMenuItem menuItem_purManager=new JMenuItem("采购管理");
     private JMenuItem menuItem_comManager=new JMenuItem("商品管理");
     private JMenuItem menuItem_typeManager=new JMenuItem("类别管理");
+    private JMenuItem menuItem_menuManager=new JMenuItem("菜谱管理");
+    private JMenuItem menuItem_menucom=new JMenuItem("菜谱推荐");
 
     private JMenuItem  menuItem_coupon=new JMenuItem("优惠券管理");
     private JMenuItem  menuItem_sale=new JMenuItem("促销管理");
@@ -37,12 +37,16 @@ public class FrmAdmin extends JFrame implements ActionListener {
         menuItem_comManager .setFont(new Font("微软雅黑", Font.BOLD, 16));
         menuItem_typeManager.setFont(new Font("微软雅黑", Font.BOLD, 16));
         menuItem_discountrule.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        menuItem_menucom.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        menuItem_menuManager.setFont(new Font("微软雅黑", Font.BOLD, 16));
         menuItem_discount.setFont(new Font("微软雅黑", Font.BOLD, 16));
         menuItem_coupon.setFont(new Font("微软雅黑", Font.BOLD, 16));
         menuItem_sale.setFont(new Font("微软雅黑", Font.BOLD, 16));
         this.menu_pur.add(this.menuItem_purManager); this.menuItem_purManager.addActionListener(this);
         this.menu_pur.add(this.menuItem_comManager);this.menuItem_comManager.addActionListener(this);
         this.menu_pur.add(this.menuItem_typeManager);this.menuItem_typeManager.addActionListener(this);
+        this.menu_pur.add(this.menuItem_menuManager);this.menuItem_menuManager.addActionListener(this);
+        this.menu_pur.add(this.menuItem_menucom);this.menuItem_menucom.addActionListener(this);
 	    this.menu_step.add(this.menuItem_discountrule); this.menuItem_discountrule.addActionListener(this);
         this.menu_step.add(this.menuItem_discount); this.menuItem_discount.addActionListener(this);
 	    this.menu_step.add(this.menuItem_coupon); this.menuItem_coupon.addActionListener(this);
@@ -95,6 +99,16 @@ public class FrmAdmin extends JFrame implements ActionListener {
         {
             FrmDiscountManager fdm=new FrmDiscountManager(this,"折扣管理",true);
             fdm.setVisible(true);
+        }
+        else if(e.getSource()==this.menuItem_menuManager)
+        {
+            FrmMenuManager fmm=new FrmMenuManager(this,"菜谱管理",true);
+            fmm.setVisible(true);
+        }
+        else if(e.getSource()==this.menuItem_menucom)
+        {
+            FrmMenuCommodity fmc=new FrmMenuCommodity(this,"推荐管理",true);
+            fmc.setVisible(true);
         }
     }
 

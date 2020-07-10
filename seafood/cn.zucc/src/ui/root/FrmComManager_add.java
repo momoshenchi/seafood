@@ -103,7 +103,7 @@ public class FrmComManager_add extends JDialog implements ActionListener
         }
     }
 
-    public String geCommodityname()
+    public String getCommodityname()
     {
         return edtcommodityname.getText();
     }

@@ -20,17 +20,17 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
 
     private JLabel labelusername = new JLabel("username");
     private JLabel labelsex = new JLabel("sex");
-    private JLabel labelphonenumber = new JLabel("phonenumber");
+    private JLabel labelphonenumber = new JLabel("phone");
     private JLabel labelmail = new JLabel("mail");
     private JLabel labelcity = new JLabel("city");
 
 
 
-    private JTextField edtusername = new JTextField(20);
-    private JTextField edtsex = new JTextField(20);
-    private JTextField edtphonenumber = new JTextField(20);
-    private JTextField edtmail = new JTextField(20);
-    private JTextField edtcity = new JTextField(20);
+    private JTextField edtusername = new JTextField(16);
+    private JTextField edtsex = new JTextField(16);
+    private JTextField edtphonenumber = new JTextField(16);
+    private JTextField edtmail = new JTextField(16);
+    private JTextField edtcity = new JTextField(16);
 
 
     private BeanUser bu=null;
@@ -61,7 +61,7 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
         workPane.add(edtcity);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(300, 240);
+        this.setSize(260, 180);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();

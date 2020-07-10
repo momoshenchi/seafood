@@ -132,7 +132,7 @@ public class FrmPurManager extends JDialog implements ActionListener
         {
             FrmComManager_add cadd=new FrmComManager_add(this,"add",true);
             cadd.setVisible(true);
-            if(cadd.geCommodityname()!=null)
+            if(cadd.getCommodityname()!=null)
             {
                 reloadTable();
             }
