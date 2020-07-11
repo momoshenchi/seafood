@@ -73,7 +73,7 @@ public class FrmPurManager extends JDialog implements ActionListener
                 (int) (height - this.getHeight()) / 2);
 
         this.validate();
-
+        this.setResizable(false);
         this.btnAdd.addActionListener(this);
         this.btnModifyput.addActionListener(this);
         this.btnModifyrev.addActionListener(this);
@@ -95,7 +95,7 @@ public class FrmPurManager extends JDialog implements ActionListener
         {
             int i=this.dataTable.getSelectedRow();
             if(i<0) {
-                JOptionPane.showMessageDialog(null,  "请选择出版社","提示",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,  "请选择商品","提示",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             BeanPurchase p=this.pubs.get(i);
@@ -113,7 +113,7 @@ public class FrmPurManager extends JDialog implements ActionListener
         {
             int i=this.dataTable.getSelectedRow();
             if(i<0) {
-                JOptionPane.showMessageDialog(null,  "请选择出版社","提示",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,  "请选择商品","提示",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             BeanPurchase p=this.pubs.get(i);
@@ -121,9 +121,9 @@ public class FrmPurManager extends JDialog implements ActionListener
             {
                 (new AdminManager()).modifyComNum(p);
             }
-            catch (BusinessException businessException)
+            catch (BusinessException be)
             {
-                businessException.printStackTrace();
+                be.printStackTrace();
             }
             this.reloadTable();
 

@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import control.ReadImage;
 import model.promote.BeanCoupon;
 
-public class FrmShop2 extends JDialog implements ActionListener
+public class Test extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
     private JPanel rightBar = new JPanel();
@@ -61,7 +61,7 @@ public class FrmShop2 extends JDialog implements ActionListener
         return p;
     }
 
-    public FrmShop2()
+    public Test()
     {
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.add(btnModify);
@@ -96,6 +96,6 @@ public class FrmShop2 extends JDialog implements ActionListener
 
     public static void main(String[] args)
     {
-        new FrmShop2();
+        new Test();
     }
 }

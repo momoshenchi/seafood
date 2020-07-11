@@ -2,8 +2,22 @@ package model.customer;
 
 public class BeanDetailOrder {
     private int orderid;
-    private int commodityid;private  int userid;
+    private int commodityid;
+    private String commodityname;
+    private  int userid;
     private int number;
+
+
+    public String getCommodityname()
+    {
+        return commodityname;
+    }
+
+    public void setCommodityname(String commodityname)
+    {
+        this.commodityname = commodityname;
+    }
+
     private double price;
     private double vipprice;
 

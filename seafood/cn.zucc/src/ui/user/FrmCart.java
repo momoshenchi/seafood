@@ -1,81 +1,76 @@
-package ui.root;
+package ui.user;
 
 import control.AdminManager;
-import control.PromoteManager;
-import model.food.BeanCommodity;
-import model.promote.BeanCoupon;
-import model.root.BeanPurchase;
-import ui.promote.FrmCouManager_mod;
+import control.UserManager;
+import model.customer.BeanAddr;
+import model.customer.BeanCart;
+import model.food.BeanRecommend;
+import model.food.BeanUserRecommend;
+import ui.root.FrmMenuCommodity_add;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class FrmComManager extends JDialog implements ActionListener
+public class FrmCart extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
-    private JButton btnModify = new JButton("修改商品");
+    private JButton btnMod = new JButton("修改商品数量");
     private JButton btnDelete = new JButton("删除商品");
+    private JButton btnbuy = new JButton("购买");
 
-    private Object tblTitle[]={"commodityid","commodityname","price","vipprice","remain_number","spec","detail","picture","typeid"};
+
+    private Object tblTitle[]={"Commodityname","number","price","vipprice"};
     private Object tblData[][];
-    List<BeanCommodity> pubs;
-
+    List<BeanCart> pubs;
 
     DefaultTableModel tablmod=new DefaultTableModel();
     private JTable dataTable=new JTable(tablmod);
 
-    private void reloadTable(){
-        pubs=(new AdminManager()).loadAllCommodity();
-        tblData =new Object[pubs.size()][9];
-        for(int i=0;i<pubs.size();i++){
-            tblData[i][0]=pubs.get(i).getCommodityid()+"";
-            tblData[i][1]=pubs.get(i).getCommodityname();
-            tblData[i][2]=pubs.get(i).getPrice()+"";
-            tblData[i][3]=pubs.get(i).getVipprice()+"";
-            tblData[i][4]=pubs.get(i).getRemain_number()+"";
-            tblData[i][5]=pubs.get(i).getSpec();
-            tblData[i][6]=pubs.get(i).getDetail();
-            tblData[i][7]=pubs.get(i).getPicture();
-            tblData[i][8]=pubs.get(i).getTypeid()+"";
+    private void reloadTable()
+    {
+        pubs = (new UserManager()).loadUserCart();
+        tblData = new Object[pubs.size()][4];
+        for (int i = 0; i < pubs.size(); i++)
+        {
+            tblData[i][0] = pubs.get(i).getCommodityname();
+            tblData[i][1] = pubs.get(i).getNumber() + "";
+            tblData[i][2] = pubs.get(i).getPrice()+"";
+            tblData[i][3] = pubs.get(i).getVipprice()+"";
+            tablmod.setDataVector(tblData, tblTitle);
+            this.dataTable.validate();
+            this.dataTable.repaint();
         }
-        tablmod.setDataVector(tblData,tblTitle);
-        this.dataTable.validate();
-        this.dataTable.repaint();
     }
-
-    public  FrmComManager(Frame f, String s, boolean b)
+    public FrmCart(JFrame f, String s, boolean b)
     {
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-        toolBar.add(btnModify);
+        toolBar.add(btnMod);
         toolBar.add(btnDelete);
+        toolBar.add(btnbuy);
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
 
         this.reloadTable();
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);
-        this.setSize(800, 600);
+        this.setSize(600, 400);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,
                 (int) (height - this.getHeight()) / 2);
-
-        this.validate();
         this.setResizable(false);
-        this.btnModify.addActionListener(this);
+        this.validate();
+        this.btnMod.addActionListener(this);
         this.btnDelete.addActionListener(this);
-
-
+        this.btnbuy.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e)
     {
-
-        if(e.getSource()==this.btnModify)
+        if (e.getSource() == this.btnMod)
         {
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
@@ -83,15 +78,15 @@ public class FrmComManager extends JDialog implements ActionListener
                 JOptionPane.showMessageDialog(null, "请选择commodity", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            BeanCommodity p = this.pubs.get(i);
-            FrmComManager_mod mod = new FrmComManager_mod(this, "modify", true, p);
+            BeanCart p = this.pubs.get(i);
+            FrmCart_mod mod = new FrmCart_mod(this, "modify", true, p);
             mod.setVisible(true);
-            if (mod.getSpce() != null)
+            if (mod.getNum() != 0)
             {
                 reloadTable();
             }
         }
-        else if(e.getSource()==this.btnDelete)
+        else if (e.getSource() == this.btnDelete)
         {
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
@@ -99,12 +94,18 @@ public class FrmComManager extends JDialog implements ActionListener
                 JOptionPane.showMessageDialog(null, "请选择commodity", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            BeanCommodity p = this.pubs.get(i);
+            BeanCart p = this.pubs.get(i);
             if (JOptionPane.showConfirmDialog(this, "确定删除吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                (new AdminManager()).delCommodity(p);
+                (new UserManager()).delCart(p);
                 this.reloadTable();
             }
+        }
+        else if(e.getSource()==this.btnbuy)
+        {
+            FrmBuy fb=new FrmBuy(this, "订单详情", true);
+            fb.setVisible(true);
+
         }
     }
 }

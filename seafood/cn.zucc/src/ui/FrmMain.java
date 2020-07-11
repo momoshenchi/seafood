@@ -1,7 +1,6 @@
 package ui;
 
 
-import ui.user.FrmUser;
 import ui.user.FrmUser2;
 
 import javax.swing.*;
@@ -12,7 +11,7 @@ public class FrmMain extends JFrame  {
     private static final long serialVersionUID = 1L;
     public static int flag=0;
     private FrmLogin dlgLogin = null;
-    private FrmUser fuser = null;
+    private FrmUser2 fuser = null;
     private FrmAdmin fadmin = null;
     private FrmAd dlga = null;
 

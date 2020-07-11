@@ -37,7 +37,7 @@ public class FrmDIscountManager_add  extends JDialog implements ActionListener
         workPane.add(edtcommodityid);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(320, 240);
+        this.setSize(320, 160);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();

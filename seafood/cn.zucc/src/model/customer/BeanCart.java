@@ -3,9 +3,21 @@ package model.customer;
 public class BeanCart
 {
     private int commodityid;
+    private  String commodityname;
     private int number;
     private  double price;
     private int userid;
+
+    public String getCommodityname()
+    {
+        return commodityname;
+    }
+
+    public void setCommodityname(String commodityname)
+    {
+        this.commodityname = commodityname;
+    }
+
     private double vipprice;
 
     public int getCommodityid()

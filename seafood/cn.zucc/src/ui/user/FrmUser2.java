@@ -28,7 +28,7 @@ public class FrmUser2 extends JFrame implements ActionListener
     private JButton Buttonshop = new JButton("生鲜购买");
     private JButton Buttonhistory = new JButton("查看历史");
     private JButton Buttoncomment = new JButton("购物评价");
-    private JButton buttoncart = new JButton("购物车");
+    private JButton buttoncart = new JButton("逛购物车");
     private JButton Buttonexit = new JButton("退出菜单");
 
     private JPanel panel = new JPanel();
@@ -137,11 +137,13 @@ public class FrmUser2 extends JFrame implements ActionListener
         }
         else if (e.getSource() == this.Buttonshop)
         {
+            new FrmShop();
 
         }
         else if (e.getSource() == this.Buttonhistory)
         {
-
+            FrmHistory fh=new FrmHistory(this, "购物历史", true);
+            fh.setVisible(true);
         }
         else if (e.getSource() == this.Buttoncomment)
         {
@@ -149,7 +151,8 @@ public class FrmUser2 extends JFrame implements ActionListener
         }
         else if(e.getSource()==buttoncart)
         {
-
+            FrmCart fc=new FrmCart(this, "购物车", true);
+            fc.setVisible(true);
         }
         else if(e.getSource()==this.menuItem_address)
         {

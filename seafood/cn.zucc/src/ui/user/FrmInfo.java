@@ -56,7 +56,7 @@ public class FrmInfo extends JDialog  implements ActionListener
         this.add();
 
         this.getContentPane().add(jp1, BorderLayout.CENTER);
-        this.setSize(800, 600);
+        this.setSize(400, 300);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,

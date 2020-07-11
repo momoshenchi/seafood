@@ -162,7 +162,7 @@ public class AdminManager
         try
         {
             con = DBUtil.getConnection();
-            String sql="select * form foodtype where typename = ? ";
+            String sql="select * from foodtype where typename = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, typename);
             ResultSet rs=pst.executeQuery();
@@ -385,11 +385,11 @@ public class AdminManager
         {
             throw new BusinessException("please input commodityname");
         }
-        if (price == 0)
+        if (price <= 0)
         {
             throw new BusinessException("please input price");
         }
-        if (vipprice == 0)
+        if (vipprice <= 0)
         {
             throw new BusinessException("please input vipprice");
         }
@@ -401,9 +401,13 @@ public class AdminManager
         {
             throw new BusinessException("please input spec");
         }
-        if (typeid == 0)
+        if (typeid <= 0)
         {
             throw new BusinessException("please input typeid");
+        }
+        if(picture== null || "".equals(picture))
+        {
+            throw new BusinessException("please input picture");
         }
         java.sql.Connection con = null;
         try

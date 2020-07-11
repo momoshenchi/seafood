@@ -1,10 +1,9 @@
 package ui.user;
 
 import control.AddressManager;
-import control.AdminManager;
+import control.UserManager;
 import model.customer.BeanAddr;
-import model.food.BeanMenu;
-import util.BaseException;
+import model.customer.BeanCart;
 import util.BusinessException;
 
 import javax.swing.*;
@@ -12,40 +11,27 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FrmAddressManager_mod extends JDialog implements ActionListener
+public class FrmCart_mod  extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
-    private JLabel labeldetail_address = new JLabel("detail_address");
-    private JLabel labelcontactname = new JLabel("contactname");
-    private JLabel labelphonenumber = new JLabel("phonenumber");
+    private JLabel labelnumber = new JLabel("number");
+    private JTextField edtnumber = new JTextField(20);
+    private BeanCart bc = null;
 
-    private JTextField edtdetail_address = new JTextField(20);
-    private JTextField edtcontactname = new JTextField(20);
-    private JTextField edtphonenumber = new JTextField(20);
-    private BeanAddr ba = null;
-
-    public FrmAddressManager_mod(JDialog f, String s, boolean b, BeanAddr ba)
+    public FrmCart_mod(JDialog f, String s, boolean b, BeanCart bc)
     {
         super(f, s, b);
-        this.ba = ba;
+        this.bc = bc;
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnOk);
         toolBar.add(btnCancel);
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
-        workPane.add(labeldetail_address);
-        edtdetail_address.setText(ba.getDetail_address());
-        workPane.add(edtdetail_address);
-
-        workPane.add(labelcontactname);
-        edtcontactname.setText(ba.getContactname());
-        workPane.add(edtcontactname);
-
-        workPane.add(labelphonenumber);
-        edtphonenumber.setText(ba.getPhonenumber());
-        workPane.add(edtphonenumber);
+        workPane.add(labelnumber);
+        edtnumber.setText(bc.getNumber()+"");
+        workPane.add(edtnumber);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
         this.setSize(280, 280);
@@ -72,12 +58,15 @@ public class FrmAddressManager_mod extends JDialog implements ActionListener
         {
             if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                ba.setDetail_address(edtdetail_address.getText());
-                ba.setPhonenumber(edtphonenumber.getText());
-                ba.setContactname(edtcontactname.getText());
+                if(edtnumber ==null ||"".equals(edtnumber))
+                {
+                    JOptionPane.showMessageDialog(null, "please input number", "提示", JOptionPane.ERROR_MESSAGE);
+                }
+
+                bc.setNumber(Integer.parseInt(edtnumber.getText()));
                 try
                 {
-                    (new AddressManager()).modifyAddr(ba);
+                    (new UserManager()).modifyCart(bc);
                 }
                 catch (BusinessException be)
                 {
@@ -89,8 +78,12 @@ public class FrmAddressManager_mod extends JDialog implements ActionListener
         }
     }
 
-    public String getDetail()
+    public int getNum()
     {
-        return edtdetail_address.getText();
+        if(edtnumber ==null ||"".equals(edtnumber))
+        {
+            return  0;
+        }
+        return Integer.parseInt(edtnumber.getText());
     }
 }

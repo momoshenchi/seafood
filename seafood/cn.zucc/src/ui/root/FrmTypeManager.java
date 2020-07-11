@@ -62,7 +62,7 @@ public class FrmTypeManager extends JDialog implements ActionListener
                 (int) (height - this.getHeight()) / 2);
 
         this.validate();
-
+        this.setResizable(false);
         this.btnAdd.addActionListener(this);
         this.btnModify.addActionListener(this);
         this.btnDelete.addActionListener(this);

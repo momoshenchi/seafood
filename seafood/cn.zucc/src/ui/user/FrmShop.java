@@ -1,5 +1,6 @@
 package ui.user;
 
+import control.AdminManager;
 import control.ReadImage;
 import model.food.BeanCommodity;
 
@@ -9,67 +10,81 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class FrmShop extends JDialog implements ActionListener{
+public class FrmShop
+{
+    private  JFrame frame =new JFrame();
+    private ScrollPane s = new ScrollPane();
+    private JPanel v = new JPanel();
+    private ScrollPane n = new ScrollPane();
+    private Box left = Box.createVerticalBox();
+    private Box right = Box.createVerticalBox();
+    private JLabel jl;
+    private JLabel picture;
+    private JButton btnadd;
+    List<BeanCommodity> bc;
 
-	private JFrame frame=new JFrame("GridLayou���ּ�����");
-	private JPanel panel=new JPanel();    //�������
-     
-     private JPanel picture1=new JPanel();
-     private JPanel picture2=new JPanel();
-     private JPanel picture3=new JPanel();
-     private JPanel picture4=new JPanel();
-     
-     private JLabel sd=new JLabel("0");
-     private JLabel sd2=new JLabel("1");
-     private JLabel sd3=new JLabel("2");
-     private JLabel sd4=new JLabel("3");
-     private JLabel sd5=new JLabel("4");
-     private JLabel p1;
-     private JLabel p2;
-     private JLabel p3;
-     private JLabel p4;
-     
-     List<BeanCommodity> pubs;
-     //ָ�����Ĳ���ΪGridLayout��4��4�У���϶Ϊ5
-     public FrmShop() {
-    	 
-    	 panel.setLayout(new GridLayout(2,2,5,5));
-     frame.add(panel);   
-     frame.setBounds(300,200,200,150);
-     
-//    pubs= (new AdminManager()).loadAllCommodity();
-//    for (int i = 0; i < pubs.size(); i++)
-//    {
-//    	BeanCommodity tem=pubs.get(i);
-//    	readIcon(new JPanel(),new JLabel(tem.getSpec()),tem.getPicture());
-//    }
-     readIcon(picture1,sd,"12.jpg");
-//     readIcon(picture2,sd2,"123.jpg");
-//     readIcon(picture3,sd3,"124.jpg");
-//     readIcon(picture4,sd4,"125.jpg");
-     
-     frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-     frame.setTitle("生鲜商超");
-     frame.add(panel);
-     frame.setVisible(true);
-     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-     }
-     public void readIcon(JPanel jp,JLabel des,String name)
-     {
-//    	 jp.setSize(40, 40);
-    	 ImageIcon icon = ReadImage.read(name);
-         p1 = new JLabel(icon);
-//         p1.setSize(40,40);
-//         p1.set
-         jp.add(p1);
-         jp.add(des);
-         panel.add(jp);
-     }
-	public void actionPerformed(ActionEvent e)
+    public FrmShop()
     {
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setTitle("admin");
+        bc = (new AdminManager()).loadAllCommodity();
+        for (int i = 0; i < bc.size(); ++i)
+        {
+            if (i % 2 == 0)
+            {
+                left.add(readBean(bc.get(i)));
+            }
+            else
+            {
+                right.add(readBean(bc.get(i)));
+            }
+        }
+        v.add(left);
+        v.add(right);
+        n.add(v);
+        frame.add(s, BorderLayout.WEST);
+        frame.add(n, BorderLayout.CENTER);
+        frame.setVisible(true);
     }
-	public static void main(String[] args) {
-		new FrmShop();
-	}
-    
+
+    public Box readBean(BeanCommodity bc)
+    {
+
+        ImageIcon icon = ReadImage.read(bc.getPicture());
+        icon.setImage(icon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));  //设置大小
+        JLabel picture = new JLabel(icon);
+        JLabel jname =new JLabel("Name: " +bc.getCommodityname());
+        JLabel jprice = new JLabel("price: " + bc.getPrice());
+        JLabel jvip = new JLabel("vipprice: " + bc.getVipprice());
+        jname.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        jprice.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        jvip.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        Box p = Box.createVerticalBox();
+        JPanel m = new JPanel();
+        JButton btnadd = new JButton("buy this ");
+        btnadd.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        btnadd.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                FrmShop_add fsa=new FrmShop_add(frame,"number",true,bc);
+                fsa.setVisible(true);
+            }
+        });
+
+        p.add(picture);
+        p.add(jname);
+        p.add(jprice);
+        p.add(jvip);
+        p.add(btnadd);
+
+        return p;
+    }
+
+
+
+    public static void main(String[] args)
+    {
+        new FrmShop();
+    }
 }
