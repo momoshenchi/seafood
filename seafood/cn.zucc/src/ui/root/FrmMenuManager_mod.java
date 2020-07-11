@@ -93,9 +93,9 @@ public class FrmMenuManager_mod extends JDialog implements ActionListener
                 {
                     (new AdminManager()).modifyMenu(bm);
                 }
-                catch (BusinessException businessException)
+                catch (BusinessException e2)
                 {
-                    businessException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e2.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
                 this.setVisible(false);
             }

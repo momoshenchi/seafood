@@ -1,7 +1,10 @@
-package ui;
+package ui.Norm;
 
 
-import ui.user.FrmUser2;
+import ui.Norm.FrmAd;
+import ui.Norm.FrmAdmin;
+import ui.Norm.FrmLogin;
+import ui.user.FrmUser;
 
 import javax.swing.*;
 
@@ -11,7 +14,7 @@ public class FrmMain extends JFrame  {
     private static final long serialVersionUID = 1L;
     public static int flag=0;
     private FrmLogin dlgLogin = null;
-    private FrmUser2 fuser = null;
+    private FrmUser fuser = null;
     private FrmAdmin fadmin = null;
     private FrmAd dlga = null;
 
@@ -22,7 +25,7 @@ public class FrmMain extends JFrame  {
 
         if(flag==0)
         {
-            FrmUser2 imageFrame = new FrmUser2();
+            FrmUser imageFrame = new FrmUser();
             imageFrame.addImageByRepaint();
         }
         else if(flag==1)

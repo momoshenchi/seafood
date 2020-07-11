@@ -2,6 +2,7 @@ package ui.promote;
 
 import control.PromoteManager;
 import model.promote.BeanDiscount;
+import util.BusinessException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -106,9 +107,9 @@ public class FrmDisRuleManager_mod  extends JDialog implements ActionListener
                     start = sdf.parse(edtstartdate.getText());
                     end = sdf.parse(edtenddate.getText());
                 }
-                catch (ParseException parseException)
+                catch (ParseException e1)
                 {
-                    parseException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
 
                 bc.setEnd_date(end);
@@ -117,7 +118,14 @@ public class FrmDisRuleManager_mod  extends JDialog implements ActionListener
                 bc.setDiscount(Double.parseDouble(edtdiscount.getText()));
                 bc.setDetail(edtdetail.getText());
 
-                (new PromoteManager()).modifyDiscountRule(bc);
+                try
+                {
+                    (new PromoteManager()).modifyDiscountRule(bc);
+                }
+                catch (BusinessException e2)
+                {
+                    JOptionPane.showMessageDialog(null, e2.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                }
                 this.setVisible(false);
             }
         }

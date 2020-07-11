@@ -3,10 +3,6 @@ package ui.user;
 import control.AddressManager;
 import control.AdminManager;
 import model.customer.BeanAddr;
-import model.food.BeanMenu;
-import ui.root.FrmMenuManager_add;
-import ui.root.FrmMenuManager_mod;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

@@ -103,9 +103,9 @@ public class FrmPurManager extends JDialog implements ActionListener
             {
                 (new AdminManager()).modifyPurchase(p);
             }
-            catch (BusinessException businessException)
+            catch (BusinessException e1)
             {
-                businessException.printStackTrace();
+                JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }
             this.reloadTable();
         }
@@ -123,7 +123,7 @@ public class FrmPurManager extends JDialog implements ActionListener
             }
             catch (BusinessException be)
             {
-                be.printStackTrace();
+                JOptionPane.showMessageDialog(null, be.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }
             this.reloadTable();
 

@@ -13,13 +13,14 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.Date;
 
-public class FrmTypeManager_mod  extends JDialog implements ActionListener
-{private JPanel toolBar = new JPanel();
+public class FrmTypeManager_mod extends JDialog implements ActionListener
+{
+    private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
-    private JLabel  labeltypeid = new JLabel("Typeid");
-    private JLabel labeltypename= new JLabel("Typename");
+    private JLabel labeltypeid = new JLabel("Typeid");
+    private JLabel labeltypename = new JLabel("Typename");
     private JLabel labeldes = new JLabel("description ");
 
 
@@ -28,18 +29,18 @@ public class FrmTypeManager_mod  extends JDialog implements ActionListener
     private JTextField edtdes = new JTextField(20);
 
 
+    private BeanType bc = null;
 
-    private BeanType bc=null;
     public FrmTypeManager_mod(JDialog f, String s, boolean b, BeanType bc)
     {
         super(f, s, b);
-        this.bc=bc;
+        this.bc = bc;
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnOk);
         toolBar.add(btnCancel);
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
         workPane.add(labeltypeid);
-        edttypeid.setText(bc.getTypeid()+"");
+        edttypeid.setText(bc.getTypeid() + "");
         edttypeid.setEnabled(false);
         workPane.add(edttypeid);
         workPane.add(labeltypename);
@@ -47,7 +48,7 @@ public class FrmTypeManager_mod  extends JDialog implements ActionListener
         edttypename.setEnabled(false);
         workPane.add(edttypename);
         workPane.add(labeldes);
-        edtdes.setText(bc.getDescription()+"");
+        edtdes.setText(bc.getDescription() + "");
         workPane.add(edtdes);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
@@ -82,9 +83,9 @@ public class FrmTypeManager_mod  extends JDialog implements ActionListener
                 {
                     (new AdminManager()).modifyType(bc);
                 }
-                catch (BusinessException businessException)
+                catch (BusinessException e1)
                 {
-                    businessException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
                 this.setVisible(false);
             }

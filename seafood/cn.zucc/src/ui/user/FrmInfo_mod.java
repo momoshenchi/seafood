@@ -4,6 +4,7 @@ import control.AdminManager;
 import control.UserManager;
 import model.customer.BeanUser;
 import model.food.BeanCommodity;
+import util.BaseException;
 import util.BusinessException;
 
 import javax.swing.*;
@@ -23,8 +24,6 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
     private JLabel labelphonenumber = new JLabel("phone");
     private JLabel labelmail = new JLabel("mail");
     private JLabel labelcity = new JLabel("city");
-
-
 
     private JTextField edtusername = new JTextField(16);
     private JTextField edtsex = new JTextField(16);
@@ -91,7 +90,14 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
                 bu.setCity(edtcity.getText());
                 bu.setSex(edtsex.getText());
 
-                (new UserManager()).modifyUserInfo(bu);
+                try
+                {
+                    (new UserManager()).modifyUserInfo(bu);
+                }
+                catch (BaseException be)
+                {
+                    JOptionPane.showMessageDialog(null, be.getMessage(), "提示", JOptionPane.ERROR_MESSAGE);
+                }
                 this.setVisible(false);
             }
         }

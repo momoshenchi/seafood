@@ -69,8 +69,6 @@ public class FrmMenuManager extends JDialog implements ActionListener
         this.btnAdd.addActionListener(this);
         this.btnModify.addActionListener(this);
         this.btnDelete.addActionListener(this);
-
-
     }
 
     public void actionPerformed(ActionEvent e)

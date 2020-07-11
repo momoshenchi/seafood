@@ -17,7 +17,7 @@ import java.util.List;
 
 public class OrderManager
 {
-    public List<BeanDetailOrder> loadUserDetailOrders()
+    public List<BeanDetailOrder> loadAllUserDetailOrders()
     {
         Connection con = null;
         List<BeanDetailOrder> l = new ArrayList<>();

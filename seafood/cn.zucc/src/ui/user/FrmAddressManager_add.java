@@ -10,15 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FrmAddressManager_add  extends JDialog implements ActionListener
-{private JPanel toolBar = new JPanel();
+{
+    private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
     private JLabel labeldetail_address = new JLabel("detail_address");
     private JLabel labelcontactname = new JLabel("contactname ");
     private JLabel labelphonenumber = new JLabel("phonenumber");
-
-
 
     private JTextField edtdetail_address = new JTextField(20);
     private JTextField edtcontactname = new JTextField(20);

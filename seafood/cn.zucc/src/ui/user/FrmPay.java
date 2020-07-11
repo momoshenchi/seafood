@@ -26,8 +26,8 @@ public class FrmPay extends JDialog implements ActionListener
     private JPanel fin = new JPanel();
     private Object tblTitle[] = {"Commodityname", "number", "price", "vipprice"};
     private Object tblData[][];
-    JComboBox coupon=new JComboBox();
-    JComboBox address=new JComboBox();
+    JComboBox coupon = new JComboBox();
+    JComboBox address = new JComboBox();
 
     private JLabel labeldate = new JLabel("Input Order time");
     private JTextField edtdate = new JTextField(20);
@@ -47,18 +47,18 @@ public class FrmPay extends JDialog implements ActionListener
         coupon.addItem("--请选择优惠券--");
         address.addItem("--请选择详细地址--");
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
-        bc=(new UserManager()).loadUserCoupon();
-        for(int i=0;i<bc.size();++i)
+        bc = (new UserManager()).loadUserCoupon();
+        for (int i = 0; i < bc.size(); ++i)
         {
-            coupon.addItem(bc.get(i).getDetail()+" 减 "+bc.get(i).getSub_price()+ "元");
+            coupon.addItem(bc.get(i).getDetail() + " 减 " + bc.get(i).getSub_price() + "元");
         }
         bo = (new OrderManager()).loadCurrentOrder();
         ba = (new AddressManager()).loadAllUserAddr();
         fin.add(coupon);
-        for(int i=0;i<ba.size();++i)
+        for (int i = 0; i < ba.size(); ++i)
         {
-            address.addItem(ba.get(i).getDetail_address()+" 联系人 "+ba.get(i).getContactname()+
-                    " 号码"+ba.get(i).getPhonenumber());
+            address.addItem(ba.get(i).getDetail_address() + " 联系人 " + ba.get(i).getContactname() +
+                    " 号码" + ba.get(i).getPhonenumber());
         }
         fin.add(address);
         addT(bo);
@@ -66,9 +66,7 @@ public class FrmPay extends JDialog implements ActionListener
         fin.add(edtdate);
 
 //        this.add(jmain,BorderLayout.NORTH);
-        this.add(fin,BorderLayout.CENTER);
-
-
+        this.add(fin, BorderLayout.CENTER);
         this.setSize(500, 300);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -79,13 +77,14 @@ public class FrmPay extends JDialog implements ActionListener
         this.btnDelete.addActionListener(this);
         this.btnpay.addActionListener(this);
     }
-    public  void addT(BeanOrder bo)
-    {
-        JLabel m1=new JLabel("预期金额");
-        JLabel m2=new JLabel("实际金额");
 
-        JLabel jLabel=new JLabel(bo.getOri_amount()+"");
-        JLabel jLabel2=new JLabel(bo.getSet_amount()+"");
+    public void addT(BeanOrder bo)
+    {
+        JLabel m1 = new JLabel("预期金额");
+        JLabel m2 = new JLabel("实际金额");
+
+        JLabel jLabel = new JLabel(bo.getOri_amount() + "");
+        JLabel jLabel2 = new JLabel(bo.getSet_amount() + "");
         fin.add(m1);
         fin.add(jLabel);
         fin.add(m2);
@@ -105,22 +104,22 @@ public class FrmPay extends JDialog implements ActionListener
         {
             if (JOptionPane.showConfirmDialog(this, "确定支付吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                int couponid=0;
-                int addressid=0;
-                if(coupon.getSelectedIndex()!=0)
+                int couponid = 0;
+                int addressid = 0;
+                if (coupon.getSelectedIndex() != 0)
                 {
-                    couponid=bc.get(coupon.getSelectedIndex()-1).getCouponid();
+                    couponid = bc.get(coupon.getSelectedIndex() - 1).getCouponid();
                 }
-                if(address.getSelectedIndex()!=0)
+                if (address.getSelectedIndex() != 0)
                 {
-                    addressid=ba.get(address.getSelectedIndex()-1).getAddressid();
+                    addressid = ba.get(address.getSelectedIndex() - 1).getAddressid();
                 }
                 else
                 {
                     JOptionPane.showMessageDialog(null, "请选择在主页输入地址", "提示", JOptionPane.ERROR_MESSAGE);
                     this.setVisible(false);
                 }
-                (new OrderManager()).pay(bo,couponid,edtdate.getText(),addressid);
+                (new OrderManager()).pay(bo, couponid, edtdate.getText(), addressid);
                 this.setVisible(false);
             }
 

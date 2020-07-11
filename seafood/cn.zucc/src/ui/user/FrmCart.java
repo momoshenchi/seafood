@@ -56,7 +56,7 @@ public class FrmCart extends JDialog implements ActionListener
 
         this.reloadTable();
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);
-        this.setSize(600, 400);
+        this.setSize(800, 600);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,
@@ -105,7 +105,6 @@ public class FrmCart extends JDialog implements ActionListener
         {
             FrmBuy fb=new FrmBuy(this, "订单详情", true);
             fb.setVisible(true);
-
         }
     }
 }

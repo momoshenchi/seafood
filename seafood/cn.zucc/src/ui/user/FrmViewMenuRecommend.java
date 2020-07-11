@@ -42,10 +42,6 @@ public class FrmViewMenuRecommend extends JDialog
     public FrmViewMenuRecommend(Frame f, String s, boolean b)
     {
         super(f,s,b);
-//        toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        toolBar.add(btnshouchang);
-//        this.getContentPane().add(toolBar, BorderLayout.NORTH);
-
         this.reloadTable();
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);
         this.setSize(800, 600);

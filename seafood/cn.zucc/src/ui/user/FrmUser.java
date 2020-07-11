@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class FrmUser2 extends JFrame implements ActionListener
+public class FrmUser extends JFrame implements ActionListener
 {
     private Dimension frameSize = new Dimension(1600, 840);
     private ImageIcon imageIcon = ReadImage.read("12.jpg");
@@ -27,7 +27,6 @@ public class FrmUser2 extends JFrame implements ActionListener
     private JButton Buttonmenu = new JButton("浏览菜谱");
     private JButton Buttonshop = new JButton("生鲜购买");
     private JButton Buttonhistory = new JButton("查看历史");
-    private JButton Buttoncomment = new JButton("购物评价");
     private JButton buttoncart = new JButton("逛购物车");
     private JButton Buttonexit = new JButton("退出菜单");
 
@@ -59,7 +58,7 @@ public class FrmUser2 extends JFrame implements ActionListener
     }
 
 
-    public FrmUser2()
+    public FrmUser()
     {
         // 设置窗体属性
 //    setSize(frameSize);
@@ -98,7 +97,7 @@ public class FrmUser2 extends JFrame implements ActionListener
     {
 //	b.setSize(800, 200);
 // 怎么设置按钮大小
-        b.add(Box.createVerticalStrut(10));
+        b.add(Box.createVerticalStrut(60));
         Buttonmenu.setFont(new Font("微软雅黑", Font.BOLD, 25));
         b.add(Buttonmenu);
         this.Buttonmenu.addActionListener(this);
@@ -110,10 +109,6 @@ public class FrmUser2 extends JFrame implements ActionListener
         Buttonhistory.setFont(new Font("微软雅黑", Font.BOLD, 25));
         b.add(Buttonhistory);
         this.Buttonhistory.addActionListener(this);
-        b.add(Box.createVerticalStrut(50));
-        Buttoncomment.setFont(new Font("微软雅黑", Font.BOLD, 25));
-        b.add(Buttoncomment);
-        this.Buttoncomment.addActionListener(this);
         b.add(Box.createVerticalStrut(50));
         buttoncart.setFont(new Font("微软雅黑", Font.BOLD, 25));
         b.add(buttoncart);
@@ -138,16 +133,11 @@ public class FrmUser2 extends JFrame implements ActionListener
         else if (e.getSource() == this.Buttonshop)
         {
             new FrmShop();
-
         }
         else if (e.getSource() == this.Buttonhistory)
         {
             FrmHistory fh=new FrmHistory(this, "购物历史", true);
             fh.setVisible(true);
-        }
-        else if (e.getSource() == this.Buttoncomment)
-        {
-
         }
         else if(e.getSource()==buttoncart)
         {
@@ -172,7 +162,7 @@ public class FrmUser2 extends JFrame implements ActionListener
 
     public static void main(String[] args)
     {
-        FrmUser2 imageFrame = new FrmUser2();
+        FrmUser imageFrame = new FrmUser();
         imageFrame.addImageByRepaint();
     }
 }

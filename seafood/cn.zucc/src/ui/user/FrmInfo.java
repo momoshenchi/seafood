@@ -29,8 +29,6 @@ public class FrmInfo extends JDialog  implements ActionListener
             "register_time","isvip","vipendtime"};
     private Object tblData[][];
     BeanUser pubs;
-
-
     private void add()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy--MM--dd");
@@ -76,7 +74,7 @@ public class FrmInfo extends JDialog  implements ActionListener
             mod.setVisible(true);
             if (mod.getSex() != null)
             {
-//                reloadTable();
+
             }
         }
 

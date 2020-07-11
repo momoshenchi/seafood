@@ -36,7 +36,7 @@ public class FrmBuy  extends JDialog implements ActionListener
         }
         catch (BusinessException e)
         {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
         }
         tblData = new Object[pubs.size()][6];
         for (int i = 0; i < pubs.size(); i++)
@@ -84,7 +84,6 @@ public class FrmBuy  extends JDialog implements ActionListener
 
     public void actionPerformed(ActionEvent e)
     {
-
         if(e.getSource()==this.btnpay)
         {
             FrmPay fp =new FrmPay(this,"选择支付",true);

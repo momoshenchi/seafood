@@ -647,8 +647,12 @@ public class UserManager
     }
 
 
-    public void modifyUserInfo(BeanUser bu)
+    public void modifyUserInfo(BeanUser bu) throws BaseException
     {
+        if (bu.getSex() == null || "".equals(bu.getSex()))
+        {
+            throw new BaseException("please input sex ");
+        }
         int userid = BeanUser.currentLoginUser.getUserid();
         Connection con = null;
         try

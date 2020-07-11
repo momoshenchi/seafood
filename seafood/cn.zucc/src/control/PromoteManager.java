@@ -282,9 +282,13 @@ public class PromoteManager
            }
        }
    }
-    public void modifySale(BeanSale bs)
+    public void modifySale(BeanSale bs) throws BusinessException
     {
-        java.sql.Connection con = null;
+        if(bs.getSaleprice()<=0)
+        {
+            throw  new BusinessException("please input saleprice");
+        }
+        Connection con = null;
         try
         {
             con = DBUtil.getConnection();
@@ -318,9 +322,17 @@ public class PromoteManager
             }
         }
     }
-    public  void modifyDiscountRule(BeanDiscount bd)
+    public  void modifyDiscountRule(BeanDiscount bd) throws BusinessException
     {
-        java.sql.Connection con = null;
+        if(bd.getMin_number()<=0)
+        {
+            throw  new BusinessException("please input min_number");
+        }
+        if(bd.getDiscount()<=0||bd.getDiscount()>=1)
+        {
+            throw  new BusinessException("please input discount");
+        }
+        Connection con = null;
         try
         {
             con = DBUtil.getConnection();

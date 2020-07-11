@@ -1,14 +1,11 @@
-package ui;
-import model.customer.BeanUser;
+package ui.Norm;
+
 import model.root.BeanAdmin;
 import starter.SeaFoodUtil;
 import util.BaseException;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Dialog;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +13,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.*;
-public class FrmAd extends JDialog implements ActionListener {
-    private FrmLogin dlgLogin=null;
-    private  FrmAdmin ad=null;
+
+public class FrmAd extends JDialog implements ActionListener
+{
+    private FrmLogin dlgLogin = null;
+    private FrmAdmin ad = null;
     private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
 
@@ -30,7 +29,8 @@ public class FrmAd extends JDialog implements ActionListener {
     private JTextField edtUserId = new JTextField(20);
     private JPasswordField edtPwd = new JPasswordField(20);
 
-    public FrmAd(JFrame f, String s, boolean b) {
+    public FrmAd(JFrame f, String s, boolean b)
+    {
         super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnLogin);
@@ -53,29 +53,36 @@ public class FrmAd extends JDialog implements ActionListener {
         btnLogin.addActionListener(this);
         btnUser.addActionListener(this);
 //        btnCancel.addActionListener(this);
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
+        this.addWindowListener(new WindowAdapter()
+        {
+            public void windowClosing(WindowEvent e)
+            {
                 System.exit(0);
             }
         });
 
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.btnLogin) {
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource() == this.btnLogin)
+        {
             String adminname = this.edtUserId.getText();
             String pwd = new String(this.edtPwd.getPassword());
-            try {
+            try
+            {
                 BeanAdmin.currentadmin = SeaFoodUtil.adminManager.login(adminname, pwd);
 
-            } catch (BaseException e1) {
+            }
+            catch (BaseException e1)
+            {
                 JOptionPane.showMessageDialog(null, e1.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             this.setVisible(false);
             new FrmAdmin();
         }
-        else if(e.getSource()==this.btnUser)
+        else if (e.getSource() == this.btnUser)
         {
             this.setVisible(false);
         }

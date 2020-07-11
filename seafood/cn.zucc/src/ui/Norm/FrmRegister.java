@@ -1,4 +1,4 @@
-package ui;
+package ui.Norm;
 
 import model.customer.BeanUser;
 import starter.SeaFoodUtil;
@@ -9,7 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FrmRegister  extends JDialog implements ActionListener {
+public class FrmRegister extends JDialog implements ActionListener
+{
     private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
     private Button btnOk = new Button("OK");
@@ -29,7 +30,9 @@ public class FrmRegister  extends JDialog implements ActionListener {
     private JTextField edtphone = new JTextField(20);
     private JPasswordField edtPwd = new JPasswordField(20);
     private JPasswordField edtPwd2 = new JPasswordField(20);
-    public FrmRegister(Dialog f, String s, boolean b) {
+
+    public FrmRegister(Dialog f, String s, boolean b)
+    {
         super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(this.btnOk);
@@ -54,24 +57,30 @@ public class FrmRegister  extends JDialog implements ActionListener {
         this.btnCancel.addActionListener(this);
         this.btnOk.addActionListener(this);
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==this.btnCancel)
-            this.setVisible(false);
-        else if(e.getSource()==this.btnOk){
-            String username=new String(this.edtUsername.getText());
-            String sex=new String(this.edtsex.getText());
 
-            String pwd1=new String(this.edtPwd.getPassword());
-            String pwd2=new String(this.edtPwd2.getPassword());
-            String city=new String(this.edtcity.getText());
-            String mail=new String(this.edtmail.getText());
-            String phone =new String(this.edtphone.getText());
-            try {
-                BeanUser user= SeaFoodUtil.userManager.reg(username,sex,pwd1,pwd2,city,mail,phone);
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource() == this.btnCancel)
+            this.setVisible(false);
+        else if (e.getSource() == this.btnOk)
+        {
+            String username = edtUsername.getText();
+            String sex = edtsex.getText();
+
+            String pwd1 = edtPwd.getPassword()+"";
+            String pwd2 = edtPwd2.getPassword()+"";
+            String city = edtcity.getText();
+            String mail = edtmail.getText();
+            String phone = edtphone.getText();
+            try
+            {
+                BeanUser user = SeaFoodUtil.userManager.reg(username, sex, pwd1, pwd2, city, mail, phone);
                 this.setVisible(false);
-            } catch (BaseException e1) {
-                JOptionPane.showMessageDialog(null, e1.getMessage(),"error",JOptionPane.ERROR_MESSAGE);
+            }
+            catch (BaseException e1)
+            {
+                JOptionPane.showMessageDialog(null, e1.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

@@ -110,9 +110,9 @@ public class FrmTypeManager extends JDialog implements ActionListener
                 {
                     (new AdminManager()).delType(p);
                 }
-                catch (BusinessException businessException)
+                catch (BusinessException e1)
                 {
-                    businessException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
                 this.reloadTable();
             }

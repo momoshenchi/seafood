@@ -88,7 +88,7 @@ public class FrmShop_add  extends JDialog implements ActionListener
                 }
                 catch (BusinessException be)
                 {
-                    be.printStackTrace();
+                    JOptionPane.showMessageDialog(null, be.getMessage(), "提示", JOptionPane.ERROR_MESSAGE);
                 }
                 this.setVisible(false);
 

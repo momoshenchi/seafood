@@ -20,34 +20,36 @@ public class FrmSaleManager extends JDialog implements ActionListener
     private JButton btnModify = new JButton("修改促销");
     private JButton btnDelete = new JButton("删除促销");
 
-    private Object tblTitle[]={"saleid","commodityid","saleprice","maxnumber","start_date","end_date"};
+    private Object tblTitle[] = {"saleid", "commodityid", "saleprice", "maxnumber", "start_date", "end_date"};
     private Object tblData[][];
     List<BeanSale> pubs;
 
 
-    DefaultTableModel tablmod=new DefaultTableModel();
-    private JTable dataTable=new JTable(tablmod);
+    DefaultTableModel tablmod = new DefaultTableModel();
+    private JTable dataTable = new JTable(tablmod);
 
-    private void reloadTable(){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy--MM--dd");
-        pubs=(new PromoteManager()).loadAllSale();
-        tblData =new Object[pubs.size()][6];
-        for(int i=0;i<pubs.size();i++){
-            tblData[i][0]=pubs.get(i).getSaleid()+"";
-            tblData[i][1]=pubs.get(i).getCommodityid()+"";
-            tblData[i][2]=pubs.get(i).getSaleprice()+"";
-            tblData[i][3]=pubs.get(i).getMaxnumber()+"";
-            tblData[i][4]=sdf.format(pubs.get(i).getStart_date());
-            tblData[i][5]=sdf.format(pubs.get(i).getEnd_date());
+    private void reloadTable()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy--MM--dd");
+        pubs = (new PromoteManager()).loadAllSale();
+        tblData = new Object[pubs.size()][6];
+        for (int i = 0; i < pubs.size(); i++)
+        {
+            tblData[i][0] = pubs.get(i).getSaleid() + "";
+            tblData[i][1] = pubs.get(i).getCommodityid() + "";
+            tblData[i][2] = pubs.get(i).getSaleprice() + "";
+            tblData[i][3] = pubs.get(i).getMaxnumber() + "";
+            tblData[i][4] = sdf.format(pubs.get(i).getStart_date());
+            tblData[i][5] = sdf.format(pubs.get(i).getEnd_date());
         }
-        tablmod.setDataVector(tblData,tblTitle);
+        tablmod.setDataVector(tblData, tblTitle);
         this.dataTable.validate();
         this.dataTable.repaint();
     }
 
-    public  FrmSaleManager(Frame f, String s, boolean b)
+    public FrmSaleManager(Frame f, String s, boolean b)
     {
-        super(f,s,b);
+        super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.add(btnAdd);
         toolBar.add(btnModify);
@@ -73,16 +75,16 @@ public class FrmSaleManager extends JDialog implements ActionListener
 
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource()==this.btnAdd)
+        if (e.getSource() == this.btnAdd)
         {
-                FrmSaleManager_add add=new FrmSaleManager_add(this,"add",true);
-                add.setVisible(true);
-                if(add.getComid()!=0)
-                {
-                    reloadTable();
-                }
+            FrmSaleManager_add add = new FrmSaleManager_add(this, "add", true);
+            add.setVisible(true);
+            if (add.getComid() != 0)
+            {
+                reloadTable();
+            }
         }
-        else if(e.getSource()==this.btnModify)
+        else if (e.getSource() == this.btnModify)
         {
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
@@ -93,11 +95,10 @@ public class FrmSaleManager extends JDialog implements ActionListener
             BeanSale p = this.pubs.get(i);
             FrmSaleManager_mod mod = new FrmSaleManager_mod(this, "modify", true, p);
             mod.setVisible(true);
-            if(mod.getPrice()!=0.0)
+            if (mod.getPrice() != 0.0)
                 reloadTable();
-
         }
-        else if(e.getSource()==this.btnDelete)
+        else if (e.getSource() == this.btnDelete)
         {
             int i = this.dataTable.getSelectedRow();
             if (i < 0)

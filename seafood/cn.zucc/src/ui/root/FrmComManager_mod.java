@@ -132,14 +132,13 @@ public class FrmComManager_mod   extends JDialog implements ActionListener
                 {
                     (new AdminManager()).modifyCommodity(bc);
                 }
-                catch (BusinessException businessException)
+                catch (BusinessException e2)
                 {
-                    businessException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e2.getMessage(), "提示", JOptionPane.ERROR_MESSAGE);
                 }
                 this.setVisible(false);
             }
         }
-
     }
 
     public String getSpce()

@@ -1,4 +1,4 @@
-package ui;
+package ui.Norm;
 
 import ui.promote.FrmCouManager;
 import ui.promote.FrmDisRuleManager;

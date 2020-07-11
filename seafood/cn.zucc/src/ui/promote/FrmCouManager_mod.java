@@ -109,9 +109,9 @@ public class FrmCouManager_mod   extends JDialog implements ActionListener
                     start = sdf.parse(edtstartdate.getText());
                     end = sdf.parse(edtenddate.getText());
                 }
-                catch (ParseException parseException)
+                catch (ParseException e1)
                 {
-                    parseException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
 
                 bc.setEnd_date(end);

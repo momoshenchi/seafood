@@ -1,8 +1,6 @@
 package starter;
 
-import ui.FrmMain;
-
-import java.io.IOException;
+import ui.Norm.FrmMain;
 
 public class SeaFoodStarter {
     public static void main(String[] args) {

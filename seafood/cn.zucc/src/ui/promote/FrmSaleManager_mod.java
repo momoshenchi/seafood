@@ -3,6 +3,7 @@ package ui.promote;
 import control.PromoteManager;
 import model.promote.BeanCoupon;
 import model.promote.BeanSale;
+import util.BusinessException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ public class FrmSaleManager_mod extends JDialog implements ActionListener
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
     private JLabel labelsaleid = new JLabel("saleid");
-    private JLabel labelcomid= new JLabel("commodityid");
+    private JLabel labelcomid = new JLabel("commodityid");
     private JLabel labelsaleprice = new JLabel("saleprice");
     private JLabel labelmaxnumber = new JLabel("maxnumber");
     private JLabel labelstartdate = new JLabel("startDate");
@@ -93,11 +94,11 @@ public class FrmSaleManager_mod extends JDialog implements ActionListener
             {
                 JOptionPane.showMessageDialog(null, "please input maxnumber", "提示", JOptionPane.ERROR_MESSAGE);
             }
-            if(edtstartdate.getText() == null || "".equals(edtstartdate.getText()))
+            if (edtstartdate.getText() == null || "".equals(edtstartdate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input startdate", "提示", JOptionPane.ERROR_MESSAGE);
             }
-            if(edtenddate.getText() == null || "".equals(edtenddate.getText()))
+            if (edtenddate.getText() == null || "".equals(edtenddate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input enddate", "提示", JOptionPane.ERROR_MESSAGE);
             }
@@ -109,9 +110,9 @@ public class FrmSaleManager_mod extends JDialog implements ActionListener
                     start = sdf.parse(edtstartdate.getText());
                     end = sdf.parse(edtenddate.getText());
                 }
-                catch (ParseException parseException)
+                catch (ParseException e2)
                 {
-                    parseException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e2.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
 
                 bc.setEnd_date(end);
@@ -119,21 +120,26 @@ public class FrmSaleManager_mod extends JDialog implements ActionListener
                 bc.setSaleprice(Double.parseDouble(edtsaleprice.getText()));
                 bc.setMaxnumber(Integer.parseInt(edtmaxnumber.getText()));
 
-                (new PromoteManager()).modifySale(bc);
+                try
+                {
+                    (new PromoteManager()).modifySale(bc);
+                }
+                catch (BusinessException e4)
+                {
+                    JOptionPane.showMessageDialog(null, e4.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                }
                 this.setVisible(false);
             }
         }
 
     }
-    public  Double getPrice()
+    public Double getPrice()
     {
         if (edtsaleprice.getText() == null || "".equals(edtsaleprice.getText()))
         {
-            return  0.0;
+            return 0.0;
         }
         return Double.parseDouble(edtsaleprice.getText());
 
     }
-
-
 }
