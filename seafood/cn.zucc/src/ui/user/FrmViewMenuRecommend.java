@@ -50,6 +50,7 @@ public class FrmViewMenuRecommend extends JDialog
         this.setLocation((int) (width - this.getWidth()) / 2,
                 (int) (height - this.getHeight()) / 2);
         this.validate();
+        this.setResizable(false);
 //        this.btnAdd.addActionListener(this);
 
     }

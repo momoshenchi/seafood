@@ -27,7 +27,9 @@ public class FrmCart_mod  extends JDialog implements ActionListener
         this.bc = bc;
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnOk);
+        btnOk.setFont(new Font("微软雅黑", Font.BOLD, 25));
         toolBar.add(btnCancel);
+       btnCancel .setFont(new Font("微软雅黑", Font.BOLD, 25));
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
         workPane.add(labelnumber);
         edtnumber.setText(bc.getNumber()+"");

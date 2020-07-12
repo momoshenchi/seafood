@@ -44,8 +44,11 @@ public class FrmAddressManager  extends JDialog implements ActionListener
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.add(btnAdd);
+        btnAdd .setFont(new Font("微软雅黑", Font.BOLD, 18));
         toolBar.add(btnModify);
+        btnModify.setFont(new Font("微软雅黑", Font.BOLD, 18));
         toolBar.add(btnDelete);
+        btnDelete.setFont(new Font("微软雅黑", Font.BOLD, 18));
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
 
         this.reloadTable();
@@ -57,6 +60,7 @@ public class FrmAddressManager  extends JDialog implements ActionListener
                 (int) (height - this.getHeight()) / 2);
 
         this.validate();
+        this.setResizable(false);
         this.btnAdd.addActionListener(this);
         this.btnModify.addActionListener(this);
         this.btnDelete.addActionListener(this);
@@ -80,7 +84,7 @@ public class FrmAddressManager  extends JDialog implements ActionListener
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
             {
-                JOptionPane.showMessageDialog(null, "请选择menu", "提示", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "请选择地址", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             BeanAddr p = this.pubs.get(i);
@@ -96,7 +100,7 @@ public class FrmAddressManager  extends JDialog implements ActionListener
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
             {
-                JOptionPane.showMessageDialog(null, "请选择menu", "提示", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "请选择地址", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             BeanAddr p = this.pubs.get(i);

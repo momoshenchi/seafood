@@ -8,13 +8,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import control.ReadImage;
@@ -85,13 +79,15 @@ public class Test extends JDialog implements ActionListener
         this.btnAdd.addActionListener(this);
         this.btnModify.addActionListener(this);
         this.btnDelete.addActionListener(this);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
 
     }
 
     public void actionPerformed(ActionEvent e)
     {
-
+        if(e.getSource()==btnAdd)
+        JOptionPane.showMessageDialog(null, "只有待支付才能付款", "提示", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args)

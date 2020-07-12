@@ -4,8 +4,6 @@ import control.AddressManager;
 import control.OrderManager;
 import control.UserManager;
 import model.customer.BeanAddr;
-import model.customer.BeanCart;
-import model.customer.BeanDetailOrder;
 import model.customer.BeanOrder;
 import model.promote.BeanCoupon;
 import util.BusinessException;
@@ -17,17 +15,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class FrmPay extends JDialog implements ActionListener
+
+//此类和FrmPay几乎一样
+public class FrmHistoryPay extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
     private JButton btnDelete = new JButton("放弃支付");
     private JButton btnpay = new JButton("付款");
     private Box box = Box.createVerticalBox();
-     JPanel jmain = new JPanel();
+    private JPanel jmain = new JPanel();
     private JPanel fin = new JPanel();
     JComboBox coupon = new JComboBox();
     JComboBox address = new JComboBox();
-
     private JLabel labeldate = new JLabel("请输入要求送达时间:");
     private JTextField edtdate = new JTextField(15);
 
@@ -37,9 +36,10 @@ public class FrmPay extends JDialog implements ActionListener
     DefaultTableModel tablmod = new DefaultTableModel();
     private JTable dataTable = new JTable(tablmod);
 
-    public FrmPay(JDialog f, String s, boolean b)
+    public FrmHistoryPay(JDialog f, String s, boolean b, BeanOrder bo)
     {
         super(f, s, b);
+        this.bo = bo;
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.add(btnDelete);
         btnDelete.setFont(new Font("微软雅黑", Font.BOLD, 16));
@@ -51,9 +51,8 @@ public class FrmPay extends JDialog implements ActionListener
         bc = (new UserManager()).loadUserCoupon();
         for (int i = 0; i < bc.size(); ++i)
         {
-            coupon.addItem(bc.get(i).getDetail() + " 起始金额: "+ bc.get(i).getStart_price()+"元  减 " + bc.get(i).getSub_price() + "元");
+            coupon.addItem(bc.get(i).getDetail() + " 起始金额: " + bc.get(i).getStart_price() + "元  减 " + bc.get(i).getSub_price() + "元");
         }
-        bo = (new OrderManager()).loadCurrentOrder();
         ba = (new AddressManager()).loadAllUserAddr();
         fin.add(coupon);
         for (int i = 0; i < ba.size(); ++i)

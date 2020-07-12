@@ -8,6 +8,7 @@ import util.BusinessException;
 import util.DBUtil;
 import control.UserManager;
 
+import javax.swing.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -118,7 +119,7 @@ public class OrderManager
         return l;
     }
 
-    //点击购买按钮
+    //在购物车点击购买按钮
     public List<BeanDetailOrder> addDetailOrder() throws BusinessException
     {
         int userid = BeanUser.currentLoginUser.getUserid();
@@ -246,9 +247,14 @@ public class OrderManager
         }
         return result;
     }
-
-    public void pay(BeanOrder bo, int couponid, String ordertime, int addressid)
+//支付指定订单
+    //购物车与历史记录都可
+    public void pay(BeanOrder bo, int couponid, String ordertime, int addressid) throws BusinessException
     {
+        if(ordertime==null||"".equals(ordertime))
+        {
+            throw  new BusinessException("请输入日期");
+        }
         int userid = BeanUser.currentLoginUser.getUserid();
         Connection con = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -259,7 +265,7 @@ public class OrderManager
         }
         catch (ParseException e1)
         {
-            e1.printStackTrace();
+            throw  new BusinessException("日期错误");
         }
         try
         {
@@ -505,7 +511,6 @@ public class OrderManager
                 pst.close();
                 return bu;
             }
-
         }
         catch (SQLException e)
         {
@@ -527,4 +532,5 @@ public class OrderManager
         }
         return null;
     }
+
 }

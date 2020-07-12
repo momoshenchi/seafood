@@ -13,23 +13,20 @@ import java.util.List;
 public class CommentManager
 {
 
+    //查看指定订单的细节
     public  List<BeanDetailOrder> loadTheDetail(BeanOrder bo) throws BusinessException
     {
-        if(!bo.getStatus().equals("已支付"))
-        {
-            throw  new BusinessException("未支付无法查看");
-        }
+
         int userid = BeanUser.currentLoginUser.getUserid();
         List<BeanDetailOrder>result=new ArrayList<>();
         Connection con = null;
         try
         {
             con = DBUtil.getConnection();
-            String sql = "select * from order_detail where userid = ? and orderstatus = ? and orderid = ? ";
+            String sql = "select * from order_detail where userid = ? and orderid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1,userid);
-            pst.setString(2,"已支付");
-            pst.setInt(3,bo.getOrderid());
+            pst.setInt(2,bo.getOrderid());
             ResultSet rs=pst.executeQuery();
             while(rs.next())
             {

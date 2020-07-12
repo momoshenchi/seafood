@@ -65,6 +65,7 @@ public class FrmHistory extends JDialog implements ActionListener
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,
                 (int) (height - this.getHeight()) / 2);
+        this.setResizable(false);
         this.validate();
         this.btndetail.addActionListener(this);
         this.btnpay.addActionListener(this);
@@ -86,7 +87,20 @@ public class FrmHistory extends JDialog implements ActionListener
         }
         else if (e.getSource() == this.btnpay)
         {
-
+            int i = this.dataTable.getSelectedRow();
+            if (i < 0)
+            {
+                JOptionPane.showMessageDialog(null, "请选择order", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            BeanOrder p = this.pubs.get(i);
+            if(!"待支付".equals(p.getStatus()))
+            {
+                JOptionPane.showMessageDialog(null, "只有待支付才能付款", "错误", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            FrmHistoryPay fb=new FrmHistoryPay(this, "订单详情", true,p);
+            fb.setVisible(true);
         }
     }
 }

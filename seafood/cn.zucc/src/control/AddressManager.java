@@ -160,17 +160,9 @@ public class AddressManager
         try
         {
             con = DBUtil.getConnection();
-            String sql="select * from address where detail_add = ? ";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, br.getDetail_address());
-            ResultSet rs=pst.executeQuery();
-            if(rs.next())
-            {
-                throw new BusinessException("Detail_address is already exist");
-            }
-             sql = "update address set detail_add = ? , contactname = ? ,  phonenum = ? " +
+             String sql = "update address set detail_add = ? , contactname = ? ,  phonenum = ? " +
                     " where addressid = ? ";
-             pst = con.prepareStatement(sql);
+             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, br.getDetail_address());
             pst.setString(2, br.getContactname());
             pst.setString(3, br.getPhonenumber());

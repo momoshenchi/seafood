@@ -66,7 +66,7 @@ public class FrmUser extends JFrame implements ActionListener
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.setTitle("生鲜商超");
         setLayout(null);
-        addComponents();
+//        addComponents();
         menuItem_address.setFont(new Font("微软雅黑", Font.BOLD, 20));
         menuItem_info .setFont(new Font("微软雅黑", Font.BOLD, 20));
         menu_info.add(menuItem_address);menuItem_address.addActionListener(this);
@@ -97,7 +97,7 @@ public class FrmUser extends JFrame implements ActionListener
     {
 //	b.setSize(800, 200);
 // 怎么设置按钮大小
-        b.add(Box.createVerticalStrut(60));
+        b.add(Box.createVerticalStrut(320));
         Buttonmenu.setFont(new Font("微软雅黑", Font.BOLD, 25));
         b.add(Buttonmenu);
         this.Buttonmenu.addActionListener(this);

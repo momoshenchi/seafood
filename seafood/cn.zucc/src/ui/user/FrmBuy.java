@@ -1,9 +1,6 @@
 package ui.user;
 
 import control.OrderManager;
-import control.PromoteManager;
-import control.UserManager;
-import model.customer.BeanCart;
 import model.customer.BeanDetailOrder;
 import util.BusinessException;
 
@@ -20,7 +17,7 @@ public class FrmBuy  extends JDialog implements ActionListener
     private JPanel toolBar = new JPanel();
     private JPanel panel = new JPanel();
     private JButton btnpay = new JButton("支付");
-    private Box box = Box.createVerticalBox();
+
 
     private String tblTitle[]={"Commodityname","Number","Price","Vipprice","Discount","Saleprice"};
     private Object tblData[][];
@@ -69,6 +66,7 @@ public class FrmBuy  extends JDialog implements ActionListener
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
         toolBar.add(btnpay);
+        btnpay.setFont(new Font("微软雅黑", Font.BOLD, 25));
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
         this.reloadTable();
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);

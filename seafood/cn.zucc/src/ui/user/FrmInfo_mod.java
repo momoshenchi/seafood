@@ -19,17 +19,17 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
 
-    private JLabel labelusername = new JLabel("username");
-    private JLabel labelsex = new JLabel("sex");
-    private JLabel labelphonenumber = new JLabel("phone");
-    private JLabel labelmail = new JLabel("mail");
-    private JLabel labelcity = new JLabel("city");
+    private JLabel labelusername = new JLabel("用户名 ");
+    private JLabel labelsex = new JLabel("性别  ");
+    private JLabel labelphonenumber = new JLabel("电话号码");
+    private JLabel labelmail = new JLabel("电子邮箱");
+    private JLabel labelcity = new JLabel("所在城市");
 
-    private JTextField edtusername = new JTextField(16);
-    private JTextField edtsex = new JTextField(16);
-    private JTextField edtphonenumber = new JTextField(16);
-    private JTextField edtmail = new JTextField(16);
-    private JTextField edtcity = new JTextField(16);
+    private JTextField edtusername = new JTextField(18);
+    private JTextField edtsex = new JTextField(18);
+    private JTextField edtphonenumber = new JTextField(18);
+    private JTextField edtmail = new JTextField(18);
+    private JTextField edtcity = new JTextField(18);
 
 
     private BeanUser bu=null;
@@ -60,7 +60,7 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
         workPane.add(edtcity);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(260, 180);
+        this.setSize(280, 220);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -98,6 +98,7 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
                 {
                     JOptionPane.showMessageDialog(null, be.getMessage(), "提示", JOptionPane.ERROR_MESSAGE);
                 }
+                JOptionPane.showMessageDialog(null, "修改成功", "恭喜", JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
             }
         }

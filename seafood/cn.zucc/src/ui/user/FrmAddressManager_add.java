@@ -30,7 +30,9 @@ public class FrmAddressManager_add  extends JDialog implements ActionListener
         super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnOk);
+       btnOk. setFont(new Font("微软雅黑", Font.BOLD, 18));
         toolBar.add(btnCancel);
+       btnCancel. setFont(new Font("微软雅黑", Font.BOLD, 18));
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
         workPane.add(labeldetail_address);
         workPane.add(edtdetail_address);
@@ -40,7 +42,7 @@ public class FrmAddressManager_add  extends JDialog implements ActionListener
         workPane.add(edtphonenumber);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(280, 280);
+        this.setSize(340, 200);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();

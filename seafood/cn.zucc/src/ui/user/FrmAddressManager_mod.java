@@ -18,9 +18,9 @@ public class FrmAddressManager_mod extends JDialog implements ActionListener
     private JPanel workPane = new JPanel();
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
-    private JLabel labeldetail_address = new JLabel("detail_address");
-    private JLabel labelcontactname = new JLabel("contactname");
-    private JLabel labelphonenumber = new JLabel("phonenumber");
+    private JLabel labeldetail_address = new JLabel("请输入详细地址");
+    private JLabel labelcontactname = new JLabel("请输入联系人姓名");
+    private JLabel labelphonenumber = new JLabel("请输入电话号码");
 
     private JTextField edtdetail_address = new JTextField(20);
     private JTextField edtcontactname = new JTextField(20);
