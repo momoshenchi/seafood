@@ -147,6 +147,7 @@ public class OrderManager
         try
         {
             con = DBUtil.getConnection();
+            con.setAutoCommit(false);
             int orderid = 1;
             String sql = "select max(orderid) from order_detail";
             PreparedStatement pst = con.prepareStatement(sql);
@@ -226,9 +227,22 @@ public class OrderManager
             pst.setString(5, "待支付");
             pst.executeUpdate();
             pst.close();
+            sql="delete from cart ";
+            pst = con.prepareStatement(sql);
+            pst.executeUpdate();
+            pst.close();
+            con.commit();
         }
         catch (SQLException e)
         {
+            try
+            {
+                con.rollback();
+            }
+            catch (SQLException throwables)
+            {
+                throwables.printStackTrace();
+            }
             e.printStackTrace();
         }
         finally
@@ -287,11 +301,11 @@ public class OrderManager
                             " orderstatus = ? where orderid = ? ";
                     pst = con.prepareStatement(sql);
                     pst.setDouble(1, sub_price);
-                    pst.setInt(1, couponid);
-                    pst.setTimestamp(2, new Timestamp(order_time.getTime()));
-                    pst.setInt(3, addressid);
-                    pst.setString(4, "已支付");
-                    pst.setInt(5, bo.getOrderid());
+                    pst.setInt(2, couponid);
+                    pst.setTimestamp(3, new Timestamp(order_time.getTime()));
+                    pst.setInt(4, addressid);
+                    pst.setString(5, "已支付");
+                    pst.setInt(6, bo.getOrderid());
                     pst.executeUpdate();
                     pst.close();
                     return;

@@ -50,11 +50,11 @@ public class FrmCart extends JDialog implements ActionListener
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         toolBar.add(btnMod);
-        btnMod.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        btnMod.setFont(new Font("微软雅黑", Font.BOLD, 14));
         toolBar.add(btnDelete);
-        btnDelete.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        btnDelete.setFont(new Font("微软雅黑", Font.BOLD, 14));
         toolBar.add(btnbuy);
-       btnbuy .setFont(new Font("微软雅黑", Font.BOLD, 18));
+       btnbuy .setFont(new Font("微软雅黑", Font.BOLD, 14));
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
 
         this.reloadTable();

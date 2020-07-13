@@ -4,10 +4,7 @@ import model.customer.BeanUser;
 import starter.SeaFoodUtil;
 import util.BaseException;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -34,8 +31,12 @@ public class FrmLogin extends JDialog implements ActionListener
     {
         super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        btnAdmin.setFont(new Font("微软雅黑", Font.BOLD, 11));
+        btnCancel.setFont(new Font("微软雅黑", Font.BOLD, 11));
+        btnLogin.setFont(new Font("微软雅黑", Font.BOLD, 11));
+        btnRegister.setFont(new Font("微软雅黑", Font.BOLD, 11));
         toolBar.add(btnAdmin);
-        toolBar.add(this.btnRegister);
+        toolBar.add(btnRegister);
         toolBar.add(btnLogin);
         toolBar.add(btnCancel);
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
@@ -45,14 +46,15 @@ public class FrmLogin extends JDialog implements ActionListener
         workPane.add(edtPwd);
         this.getContentPane().add(workPane, BorderLayout.CENTER);
 
-
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
         this.setSize(320, 140);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,
                 (int) (height - this.getHeight()) / 2);
         this.validate();
-
+        this.setResizable(false);
         btnLogin.addActionListener(this);
         btnCancel.addActionListener(this);
         this.btnRegister.addActionListener(this);

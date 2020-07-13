@@ -5,7 +5,13 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.*;
@@ -13,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import control.ReadImage;
 import model.promote.BeanCoupon;
+import util.DBUtil;
 
 public class Test extends JDialog implements ActionListener
 {
@@ -35,7 +42,7 @@ public class Test extends JDialog implements ActionListener
         tblData = new Object[2][2];
         for (int i = 0; i < 2; i++)
         {
-            tblData[i][0] = i+"";
+            tblData[i][0] = i + "";
             tblData[i][1] = i + "";
 
         }
@@ -44,54 +51,45 @@ public class Test extends JDialog implements ActionListener
         this.dataTable.repaint();
     }
 
-    public JPanel readIcon(String name)
-    {
-
-        ImageIcon icon = ReadImage.read(name);
-        JLabel p1 = new JLabel(icon);
-        JPanel p = new JPanel();
-        p.add(p1);
-        p.setSize(40,40);
-        return p;
-    }
-
-    public Test()
-    {
-        toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-        toolBar.add(btnModify);
-        toolBar.add(btnDelete);
-        this.getContentPane().add(toolBar, BorderLayout.NORTH);
-        rightBar.add(btnAdd);
-
-        this.getContentPane().add(readIcon("12.jpg"),BorderLayout.WEST);
-        this.getContentPane().add(rightBar,BorderLayout.EAST);
-
-        this.reloadTable();
-        this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);
-        this.setSize(1200, 800);
-        double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-        this.setLocation((int) (width - this.getWidth()) / 2,
-                (int) (height - this.getHeight()) / 2);
-
-        this.validate();
-
-        this.btnAdd.addActionListener(this);
-        this.btnModify.addActionListener(this);
-        this.btnDelete.addActionListener(this);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setVisible(true);
-
-    }
 
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource()==btnAdd)
-        JOptionPane.showMessageDialog(null, "只有待支付才能付款", "提示", JOptionPane.INFORMATION_MESSAGE);
+        if (e.getSource() == btnAdd)
+            JOptionPane.showMessageDialog(null, "只有待支付才能付款", "提示", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args)
     {
-        new Test();
+        Connection con;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql = "insert into sale(commodityid,saleprice,maxnumber,start_date,end_date) " +
+                    "values(3,123,10,?,?)";
+            PreparedStatement pst = con.prepareStatement(sql);
+            String date = "2020-01-25";
+            int month=1;
+
+            Calendar c=Calendar.getInstance();
+            c.add(Calendar.MONTH,1);
+            try
+            {
+                pst.setTimestamp(1, new java.sql.Timestamp(sdf.parse(date).getTime()));
+                pst.setTimestamp(2, new java.sql.Timestamp(c.getTimeInMillis()));
+            }
+            catch (ParseException e)
+            {
+                e.printStackTrace();
+            }
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
     }
 }

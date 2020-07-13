@@ -66,7 +66,7 @@ public class FrmBuy  extends JDialog implements ActionListener
         super(f,s,b);
         toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
         toolBar.add(btnpay);
-        btnpay.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        btnpay.setFont(new Font("微软雅黑", Font.ITALIC, 12));
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
         this.reloadTable();
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);

@@ -69,14 +69,17 @@ public class FrmSaleManager_add extends JDialog implements ActionListener
             if(edtcommodityid.getText() == null||"".equals(edtcommodityid.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input commodityid", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(edtsaleprice.getText() == null||"".equals(edtsaleprice.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input saleprice", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(edtmaxnumber.getText() == null||"".equals(edtmaxnumber.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input maxnumber", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             try
             {

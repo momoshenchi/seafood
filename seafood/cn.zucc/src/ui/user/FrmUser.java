@@ -19,8 +19,14 @@ public class FrmUser extends JFrame implements ActionListener
     private ImageIcon imageIcon = ReadImage.read("12.jpg");
 
     private JMenu menu_info=new JMenu("个人信息");
+    private JMenu menu_vip=new JMenu("充值VIP");
+    private JMenu menu_coupon=new JMenu("商城活动");
+    private JMenuItem menuItem_changer=new JMenuItem("更改密码");
     private JMenuItem menuItem_address=new JMenuItem("地址管理");
     private JMenuItem menuItem_info=new JMenuItem("个人信息");
+
+    private JMenuItem menuItem_coupon=new JMenuItem("获得优惠券");
+    private JMenuItem menuItem_vip=new JMenuItem("充值VIP");
     private JMenuBar menubar=new JMenuBar();
 
 
@@ -57,7 +63,6 @@ public class FrmUser extends JFrame implements ActionListener
         }
     }
 
-
     public FrmUser()
     {
         // 设置窗体属性
@@ -66,13 +71,22 @@ public class FrmUser extends JFrame implements ActionListener
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.setTitle("生鲜商超");
         setLayout(null);
-//        addComponents();
-        menuItem_address.setFont(new Font("微软雅黑", Font.BOLD, 20));
-        menuItem_info .setFont(new Font("微软雅黑", Font.BOLD, 20));
+        menuItem_changer.setFont(new Font("微软雅黑", Font.BOLD, 10));
+        menuItem_address.setFont(new Font("微软雅黑", Font.BOLD, 10));
+        menuItem_info .setFont(new Font("微软雅黑", Font.BOLD, 10));
+        menuItem_vip.setFont(new Font("微软雅黑", Font.BOLD, 10));
+        menuItem_coupon.setFont(new Font("微软雅黑", Font.BOLD, 10));
+
         menu_info.add(menuItem_address);menuItem_address.addActionListener(this);
         menu_info.add(menuItem_info);menuItem_info.addActionListener(this);
         menu_info.setFont(new Font("微软雅黑", Font.BOLD, 20));
+        menu_vip.add(menuItem_vip);menuItem_vip.addActionListener(this);
+        menu_vip.setFont(new Font("微软雅黑", Font.BOLD, 20));
+        menu_coupon.add(menuItem_coupon);menuItem_coupon.addActionListener(this);
+        menu_coupon.setFont(new Font("微软雅黑", Font.BOLD, 20));
         menubar.add(menu_info);
+        menubar.add(menu_vip);
+        menubar.add(menu_coupon);
         this.setJMenuBar(menubar);
 
         JLabel lbBg = new JLabel(imageIcon);
@@ -120,7 +134,6 @@ public class FrmUser extends JFrame implements ActionListener
         b.setFont(font);
         this.getContentPane().add(b);
 //    this.getContentPane().setFont(font);
-
     }
 
     public void actionPerformed(ActionEvent e)
@@ -157,6 +170,16 @@ public class FrmUser extends JFrame implements ActionListener
         else if (e.getSource() == this.Buttonexit)
         {
             System.exit(0);
+        }
+        else if(e.getSource()==menuItem_vip)
+        {
+            FrmVIP fv=new FrmVIP(this, "VIP", true);
+            fv.setVisible(true);
+        }
+        else if(e.getSource()==menuItem_coupon)
+        {
+            FrmGetCoupon fgc=new FrmGetCoupon(this, "Coupon", true);
+            fgc.setVisible(true);
         }
     }
 

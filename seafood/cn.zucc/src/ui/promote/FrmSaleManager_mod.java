@@ -89,18 +89,22 @@ public class FrmSaleManager_mod extends JDialog implements ActionListener
             if (edtsaleprice.getText() == null || "".equals(edtsaleprice.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input saleprice", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtmaxnumber.getText() == null || "".equals(edtmaxnumber.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input maxnumber", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtstartdate.getText() == null || "".equals(edtstartdate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input startdate", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtenddate.getText() == null || "".equals(edtenddate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input enddate", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {

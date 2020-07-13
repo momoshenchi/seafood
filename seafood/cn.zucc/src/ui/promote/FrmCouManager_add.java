@@ -70,14 +70,15 @@ public class FrmCouManager_add extends JDialog implements ActionListener
             if (edtstart_price.getText() == null||"".equals(edtstart_price.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input start_price", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtsub_price.getText() == null||"".equals(edtsub_price.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input sub_price", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             try
             {
-
                 (new PromoteManager()).addCoupon(edtdetail.getText(), Double.parseDouble(edtstart_price.getText()),
                         Double.parseDouble(edtsub_price.getText()), edtstartdate.getText(), edtenddate.getText());
                 this.setVisible(false);

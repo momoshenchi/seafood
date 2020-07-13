@@ -27,16 +27,16 @@ public class FrmCart_mod  extends JDialog implements ActionListener
         this.bc = bc;
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnOk);
-        btnOk.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        btnOk.setFont(new Font("微软雅黑", Font.ITALIC, 12));
         toolBar.add(btnCancel);
-       btnCancel .setFont(new Font("微软雅黑", Font.BOLD, 25));
+       btnCancel .setFont(new Font("微软雅黑", Font.ITALIC, 12));
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
         workPane.add(labelnumber);
         edtnumber.setText(bc.getNumber()+"");
         workPane.add(edtnumber);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(280, 280);
+        this.setSize(300, 160);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -60,9 +60,10 @@ public class FrmCart_mod  extends JDialog implements ActionListener
         {
             if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                if(edtnumber ==null ||"".equals(edtnumber))
+                if(edtnumber.getText() ==null ||"".equals(edtnumber.getText()))
                 {
                     JOptionPane.showMessageDialog(null, "please input number", "提示", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
                 bc.setNumber(Integer.parseInt(edtnumber.getText()));
@@ -81,7 +82,7 @@ public class FrmCart_mod  extends JDialog implements ActionListener
 
     public int getNum()
     {
-        if(edtnumber ==null ||"".equals(edtnumber))
+        if(edtnumber.getText() ==null ||"".equals(edtnumber.getText()))
         {
             return  0;
         }

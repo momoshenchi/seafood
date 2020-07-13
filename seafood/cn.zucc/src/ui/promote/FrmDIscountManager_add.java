@@ -62,10 +62,12 @@ public class FrmDIscountManager_add  extends JDialog implements ActionListener
             if(edtdiscountid.getText() == null||"".equals(edtdiscountid.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input discountid", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtcommodityid.getText() == null||"".equals(edtcommodityid.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input commodityid", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             try
             {

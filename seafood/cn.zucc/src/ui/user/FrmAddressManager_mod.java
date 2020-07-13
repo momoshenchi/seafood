@@ -84,7 +84,6 @@ public class FrmAddressManager_mod extends JDialog implements ActionListener
                     JOptionPane.showMessageDialog(null, be.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
                 this.setVisible(false);
-
             }
         }
     }

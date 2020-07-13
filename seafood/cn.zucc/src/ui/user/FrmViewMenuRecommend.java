@@ -16,13 +16,13 @@ import java.util.List;
 public class FrmViewMenuRecommend extends JDialog
 {
     private JPanel toolBar = new JPanel();
-    private JButton btnshouchang;
-    private Object tblTitle[]={"commodityname","price","menuname","ingredient"};
+    private JLabel j = new JLabel("Just Look and Collect ");
+    private Object tblTitle[] = {"menuname", "ingredient", "commodityname", "price"};
     private Object tblData[][];
     List<BeanUserRecommend> pubs;
 
-    DefaultTableModel tablmod=new DefaultTableModel();
-    private JTable dataTable=new JTable(tablmod);
+    DefaultTableModel tablmod = new DefaultTableModel();
+    private JTable dataTable = new JTable(tablmod);
 
     private void reloadTable()
     {
@@ -30,19 +30,23 @@ public class FrmViewMenuRecommend extends JDialog
         tblData = new Object[pubs.size()][4];
         for (int i = 0; i < pubs.size(); i++)
         {
-            tblData[i][0] = pubs.get(i).getCommodityname();
-            tblData[i][1] = pubs.get(i).getPrice()+"";
-            tblData[i][2] = pubs.get(i).getMenuname();
-            tblData[i][3] = pubs.get(i).getIngredient();
+            tblData[i][0] = pubs.get(i).getMenuname();
+            tblData[i][1] = pubs.get(i).getIngredient();
+            tblData[i][2] = pubs.get(i).getCommodityname();
+            tblData[i][3] = pubs.get(i).getPrice() + "";
             tablmod.setDataVector(tblData, tblTitle);
             this.dataTable.validate();
             this.dataTable.repaint();
         }
     }
+
     public FrmViewMenuRecommend(Frame f, String s, boolean b)
     {
-        super(f,s,b);
+        super(f, s, b);
         this.reloadTable();
+        j.setFont(new Font("微软雅黑", Font.ITALIC, 24));
+        toolBar.add(j);
+        this.getContentPane().add(j, BorderLayout.NORTH);
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);
         this.setSize(800, 600);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -51,7 +55,5 @@ public class FrmViewMenuRecommend extends JDialog
                 (int) (height - this.getHeight()) / 2);
         this.validate();
         this.setResizable(false);
-//        this.btnAdd.addActionListener(this);
-
     }
 }

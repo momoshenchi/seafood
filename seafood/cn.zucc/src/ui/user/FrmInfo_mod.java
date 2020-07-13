@@ -84,12 +84,10 @@ public class FrmInfo_mod  extends JDialog implements ActionListener
         {
             if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-
                 bu.setPhonenumber(edtphonenumber.getText());
                 bu.setMail(edtmail.getText());
                 bu.setCity(edtcity.getText());
                 bu.setSex(edtsex.getText());
-
                 try
                 {
                     (new UserManager()).modifyUserInfo(bu);

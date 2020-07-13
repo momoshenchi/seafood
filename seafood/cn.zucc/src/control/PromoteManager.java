@@ -106,8 +106,16 @@ public class PromoteManager
             }
         }
     }
-    public  void modifyCoupon(BeanCoupon bc)
+    public  void modifyCoupon(BeanCoupon bc) throws BusinessException
     {
+        if (bc.getStart_price() <= 0)
+        {
+            throw new BusinessException("please input start_price");
+        }
+        if (bc.getSub_price() <= 0)
+        {
+            throw new BusinessException("please input sub_price");
+        }
         java.sql.Connection con = null;
         try
         {
@@ -437,6 +445,7 @@ public class PromoteManager
             con = DBUtil.getConnection();
             String sql="select * from commodity where commodityid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1,commodityid);
             ResultSet rs=pst.executeQuery();
             if(!rs.next())
             {

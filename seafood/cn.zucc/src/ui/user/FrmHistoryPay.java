@@ -90,9 +90,9 @@ public class FrmHistoryPay extends JDialog implements ActionListener
         m1.setFont(new Font("微软雅黑", Font.BOLD, 18));
         JLabel m2 = new JLabel("实际金额 :");
         m2.setFont(new Font("微软雅黑", Font.BOLD, 18));
-        JLabel jLabel = new JLabel(bo.getOri_amount() + " 元");
+        JLabel jLabel = new JLabel(String.format("%.2f", bo.getOri_amount()) + " 元");
         jLabel.setFont(new Font("微软雅黑", Font.BOLD, 18));
-        JLabel jLabel2 = new JLabel(bo.getSet_amount() + " 元");
+        JLabel jLabel2 = new JLabel(String.format("%.2f", bo.getSet_amount())+ " 元");
         jLabel2.setFont(new Font("微软雅黑", Font.BOLD, 18));
         fin.add(m1);
         fin.add(jLabel);
@@ -110,6 +110,7 @@ public class FrmHistoryPay extends JDialog implements ActionListener
             if (JOptionPane.showConfirmDialog(this, "确定放弃吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
                 (new OrderManager()).delPay(bo);
+                this.setVisible(false);
             }
         }
         else if (e.getSource() == this.btnpay)
@@ -129,17 +130,18 @@ public class FrmHistoryPay extends JDialog implements ActionListener
                 else
                 {
                     JOptionPane.showMessageDialog(null, "请在主页输入地址", "提示", JOptionPane.ERROR_MESSAGE);
-                    this.setVisible(false);
+                    return;
                 }
                 try
                 {
                     (new OrderManager()).pay(bo, couponid, edtdate.getText(), addressid);
+                    JOptionPane.showMessageDialog(null, "支付成功", "恭喜", JOptionPane.INFORMATION_MESSAGE);
                 }
                 catch (BusinessException e2)
                 {
                     JOptionPane.showMessageDialog(null, e2.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null, "支付成功", "恭喜", JOptionPane.INFORMATION_MESSAGE);
+
                 this.setVisible(false);
             }
         }

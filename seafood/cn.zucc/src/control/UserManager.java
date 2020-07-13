@@ -14,9 +14,8 @@ import util.DBUtil;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
 
 public class UserManager
 {
@@ -278,7 +277,53 @@ public class UserManager
         }
 
     }
-
+    public  void getRandomCoupon()
+    {
+        int userid = BeanUser.currentLoginUser.getUserid();
+        Connection con = null;
+        List<Integer>num=new ArrayList<>();
+        try
+        {
+            con = DBUtil.getConnection();
+            String sql="select couponid from coupon";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next())
+            {
+                num.add(rs.getInt(1));
+            }
+            rs.close();
+            pst.close();
+            Random a =new Random();
+            int bound=num.size();
+            int ram=a.nextInt(bound);
+           int couponid=num.get(ram);
+             sql = "insert  into user_coupon(userid,couponid)values(? ,? )";
+             pst = con.prepareStatement(sql);
+            pst.setInt(1, userid);
+            pst.setInt(2, couponid);
+            pst.executeUpdate();
+            pst.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (con != null)
+            {
+                try
+                {
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     public void getCoupon(int conponid)
     {
         int userid = BeanUser.currentLoginUser.getUserid();
@@ -364,22 +409,51 @@ public class UserManager
         return null;
     }
 
-    public void addUserVIP(int num)
+    public void addUserVIP(int num) throws BusinessException
     {
+        if(num<=0)
+        {
+            throw  new BusinessException("please input month");
+        }
         Connection con = null;
         int userid = BeanUser.currentLoginUser.getUserid();
         try
         {
             con = DBUtil.getConnection();
-            String sql = "update users set isvip = ? ,vipendtime = vipendtime + ? " +
-                    "where userid = ? ";
+            String sql = "select isvip ,vipendtime from users where userid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, "true");
-            long now = num * 30 * 24 * 3600 * 1000;
-            pst.setTimestamp(2, new Timestamp(now));
-            pst.setInt(3, userid);
-            pst.executeUpdate();
-            pst.close();
+            pst.setInt(1, userid);
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                if("false".equals(rs.getString(1)))
+                {
+                    sql = "update users set isvip = ? ,vipendtime =  ? " +
+                            "where userid = ? ";
+                    pst = con.prepareStatement(sql);
+                    pst.setString(1, "true");
+                    Calendar c=Calendar.getInstance();
+                    c.add(Calendar.MONTH,num);
+                    pst.setTimestamp(2, new Timestamp(c.getTimeInMillis()));
+                    pst.setInt(3, userid);
+                    pst.executeUpdate();
+                    pst.close();
+                }
+                else
+                {
+                    Timestamp now = rs.getTimestamp(2);
+                    sql = "update users set  vipendtime =  ? " +
+                            "where userid = ? ";
+                    pst = con.prepareStatement(sql);
+                    Calendar c=Calendar.getInstance();
+                    c.setTime(now);
+                    c.add(Calendar.MONTH,num);
+                    pst.setTimestamp(1, new Timestamp(c.getTimeInMillis()));
+                    pst.setInt(2, userid);
+                    pst.executeUpdate();
+                    pst.close();
+                }
+            }
         }
         catch (SQLException e)
         {

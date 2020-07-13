@@ -54,14 +54,14 @@ public class FrmShop
         icon.setImage(icon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));  //设置大小
         JLabel picture = new JLabel(icon);
         JLabel jname =new JLabel("Name: " +bc.getCommodityname());
-        JLabel jprice = new JLabel("price: " + bc.getPrice());
-        JLabel jvip = new JLabel("vipprice: " + bc.getVipprice());
+        JLabel jprice = new JLabel("Price: " + bc.getPrice());
+        JLabel jvip = new JLabel("Vipprice: " + bc.getVipprice());
         jname.setFont(new Font("微软雅黑", Font.BOLD, 25));
         jprice.setFont(new Font("微软雅黑", Font.BOLD, 25));
         jvip.setFont(new Font("微软雅黑", Font.BOLD, 25));
         Box p = Box.createVerticalBox();
         JPanel m = new JPanel();
-        JButton btnadd = new JButton("buy this ");
+        JButton btnadd = new JButton("Buy this ");
         btnadd.setFont(new Font("微软雅黑", Font.BOLD, 25));
         btnadd.addActionListener(new ActionListener()
         {

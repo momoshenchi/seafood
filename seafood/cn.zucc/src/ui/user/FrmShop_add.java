@@ -77,9 +77,10 @@ public class FrmShop_add  extends JDialog implements ActionListener
         {
             if (JOptionPane.showConfirmDialog(this, "确定加入购物车吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
-                if(edtnumber ==null ||"".equals(edtnumber))
+                if(edtnumber.getText() ==null ||"".equals(edtnumber.getText()))
                 {
                     JOptionPane.showMessageDialog(null, "please input number", "提示", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 try
                 {

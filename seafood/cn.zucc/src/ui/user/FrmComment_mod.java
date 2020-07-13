@@ -1,45 +1,50 @@
 package ui.user;
 
-import control.AddressManager;
-import util.BaseException;
+import control.CommentManager;
+import model.customer.BeanDetailOrder;
+import model.food.BeanComment;
+import util.BusinessException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FrmAddressManager_add extends JDialog implements ActionListener
+public class FrmComment_mod  extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
     private JPanel workPane = new JPanel();
     private JButton btnOk = new JButton("确定");
     private JButton btnCancel = new JButton("取消");
-    private JLabel labeldetail_address = new JLabel("detail_address");
-    private JLabel labelcontactname = new JLabel("contactname ");
-    private JLabel labelphonenumber = new JLabel("phonenumber");
+    private JLabel labelcomments = new JLabel("comments");
+    private JLabel labellevels = new JLabel("Levels ");
+    private JLabel labelpicture = new JLabel("Picture");
 
-    private JTextField edtdetail_address = new JTextField(20);
-    private JTextField edtcontactname = new JTextField(20);
-    private JTextField edtphonenumber = new JTextField(20);
+    private JTextField edtcomments = new JTextField(16);
+    private JTextField edtlevels  = new JTextField(16);
+    private JTextField edtpicture = new JTextField(16);
 
-    public FrmAddressManager_add(JDialog f, String s, boolean b)
+    private BeanComment bc;
+    public FrmComment_mod(JDialog f, String s, boolean b, BeanComment bc)
     {
         super(f, s, b);
+        this.bc=bc;
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         toolBar.add(btnOk);
-        btnOk.setFont(new Font("微软雅黑", Font.BOLD, 18));
         toolBar.add(btnCancel);
-        btnCancel.setFont(new Font("微软雅黑", Font.BOLD, 18));
         this.getContentPane().add(toolBar, BorderLayout.SOUTH);
-        workPane.add(labeldetail_address);
-        workPane.add(edtdetail_address);
-        workPane.add(labelcontactname);
-        workPane.add(edtcontactname);
-        workPane.add(labelphonenumber);
-        workPane.add(edtphonenumber);
+        workPane.add(labelcomments);
+        edtcomments.setText(bc.getComments());
+        workPane.add(edtcomments);
+        workPane.add(labellevels);
+        edtlevels.setText(bc.getLevels());
+        workPane.add(edtlevels);
+        workPane.add(labelpicture);
+        edtpicture.setText(bc.getPicture());
+        workPane.add(edtpicture);
 
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(340, 200);
+        this.setSize(280, 180);
         // 屏幕居中显示
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -51,7 +56,7 @@ public class FrmAddressManager_add extends JDialog implements ActionListener
         this.btnCancel.addActionListener(this);
     }
 
-    @Override
+
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == this.btnCancel)
@@ -61,20 +66,22 @@ public class FrmAddressManager_add extends JDialog implements ActionListener
         }
         else if (e.getSource() == this.btnOk)
         {
+            bc.setComments(edtcomments.getText());
+            bc.setPicture(edtpicture.getText());
+            bc.setLevels(edtlevels.getText());
             try
             {
-                (new AddressManager()).addAddr(edtdetail_address.getText(), edtcontactname.getText(), edtphonenumber.getText());
-                this.setVisible(false);
+                (new CommentManager()).modifyComment(bc);
             }
-            catch (BaseException e1)
+            catch (BusinessException e1)
             {
                 JOptionPane.showMessageDialog(null, e1.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }
+            this.setVisible(false);
         }
     }
-
-    public String getDetail()
+    public String getComment()
     {
-        return edtdetail_address.getText();
+        return edtcomments.getText();
     }
 }

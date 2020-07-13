@@ -3,6 +3,8 @@ package ui.user;
 import control.CommentManager;
 import model.customer.BeanDetailOrder;
 import model.customer.BeanOrder;
+import model.promote.BeanCoupon;
+import ui.promote.FrmCouManager_mod;
 import util.BusinessException;
 
 import javax.swing.*;
@@ -15,8 +17,7 @@ import java.util.List;
 public class FrmTheDetail_Order   extends JDialog implements ActionListener
 {
     private JPanel toolBar = new JPanel();
-    private JButton btncmt = new JButton("添加评论");
-
+    private JButton btncmd = new JButton("评论管理");
 
     private Object tblTitle[]={"Commodityname","number","price","vipprice","discount","saleprice","orderstatus"};
     private Object tblData[][];
@@ -55,38 +56,42 @@ public class FrmTheDetail_Order   extends JDialog implements ActionListener
         super(f,s,b);
         this.bo=bo;
         toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
-        toolBar.add(btncmt);
+        toolBar.add(btncmd);
+        btncmd .setFont(new Font("微软雅黑", Font.BOLD, 18));
+
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
 
         this.reloadTable();
         this.getContentPane().add(new JScrollPane(this.dataTable), BorderLayout.CENTER);
-        this.setSize(600, 400);
+        this.setSize(800, 600);
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         this.setLocation((int) (width - this.getWidth()) / 2,
                 (int) (height - this.getHeight()) / 2);
         this.setResizable(false);
         this.validate();
-        this.btncmt.addActionListener(this);
+        this.btncmd.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == this.btncmt)
+        if (e.getSource() == this.btncmd)
         {
             int i = this.dataTable.getSelectedRow();
             if (i < 0)
             {
-                JOptionPane.showMessageDialog(null, "请选择detail", "提示", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "请选择具体订单", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             BeanDetailOrder p = this.pubs.get(i);
-            FrmComment_add mod = new FrmComment_add(this, "Comment", true, p);
-            mod.setVisible(true);
-            if (mod.getComment() != null)
+            if(!"已支付".equals(p.getOrderstatus()))
             {
-                reloadTable();
+                JOptionPane.showMessageDialog(null, "未支付订单无法评论", "错误", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            FrmComment mod = new FrmComment(this, "Comment", true, p);
+            mod.setVisible(true);
         }
+
     }
 }

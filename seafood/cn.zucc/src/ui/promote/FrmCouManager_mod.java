@@ -3,6 +3,7 @@ package ui.promote;
 import control.PromoteManager;
 import model.promote.BeanCoupon;
 import util.BaseException;
+import util.BusinessException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,18 +89,22 @@ public class FrmCouManager_mod   extends JDialog implements ActionListener
             if (edtstart_price.getText() == null || "".equals(edtstart_price.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input start_price", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtsub_price.getText() == null || "".equals(edtsub_price.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input sub_price", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(edtstartdate.getText() == null || "".equals(edtstartdate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input startdate", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(edtenddate.getText() == null || "".equals(edtenddate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input enddate", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
@@ -120,7 +125,14 @@ public class FrmCouManager_mod   extends JDialog implements ActionListener
                 bc.setSub_price(Double.parseDouble(edtsub_price.getText()));
                 bc.setDetail(edtdetail.getText());
 
-                (new PromoteManager()).modifyCoupon(bc);
+                try
+                {
+                    (new PromoteManager()).modifyCoupon(bc);
+                }
+                catch (BusinessException e2)
+                {
+                    JOptionPane.showMessageDialog(null, e2.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                }
                 this.setVisible(false);
             }
         }

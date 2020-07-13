@@ -69,10 +69,12 @@ public class FrmDisRuleManager_add extends JDialog implements ActionListener
             if(edtmin_number.getText() == null||"".equals(edtmin_number.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input min_number", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtdiscount.getText() == null||"".equals(edtdiscount.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input discount", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             try
             {

@@ -35,11 +35,11 @@ public class FrmInfo extends JDialog implements ActionListener
         loop("电子邮箱 :", pubs.getMail());
         loop("所在城市 :", pubs.getCity());
         loop("注册时间 :", sdf.format(pubs.getRegister_time()));
-        loop("是否为VIP", pubs.getIsvip());
+        loop("是否为VIP :", pubs.getIsvip());
         if ("true".equals(pubs.getIsvip()))
-            loop("VIP到期时间",sdf.format(pubs.getVipendtime()));
+            loop("VIP到期时间 :",sdf.format(pubs.getVipendtime()));
         else
-            loop("VIP到期时间","无");
+            loop("VIP到期时间 :","无");
     }
 
     public void loop(String s1, String s2)
@@ -86,10 +86,6 @@ public class FrmInfo extends JDialog implements ActionListener
             {
 
             }
-
         }
-
     }
-
-
 }

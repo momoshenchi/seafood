@@ -17,7 +17,7 @@ public class FrmMenuCommodity extends JDialog implements ActionListener
     private JButton btnAdd = new JButton("增加推荐");
     private JButton btnDelete = new JButton("删除推荐");
 
-    private Object tblTitle[]={"menuid","commodityid","description"};
+    private Object tblTitle[]={"Commodityid","Menuid","Description"};
     private Object tblData[][];
     List<BeanRecommend> pubs;
 

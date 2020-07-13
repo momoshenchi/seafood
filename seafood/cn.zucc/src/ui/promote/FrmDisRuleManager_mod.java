@@ -86,18 +86,22 @@ public class FrmDisRuleManager_mod  extends JDialog implements ActionListener
             if (edtminnumber.getText() == null || "".equals(edtminnumber.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input minnumber", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (edtdiscount.getText() == null || "".equals(edtdiscount.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input discount", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(edtstartdate.getText() == null || "".equals(edtstartdate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input startdate", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if(edtenddate.getText() == null || "".equals(edtenddate.getText()))
             {
                 JOptionPane.showMessageDialog(null, "please input enddate", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             if (JOptionPane.showConfirmDialog(this, "确定修改吗？", "确认", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
             {
