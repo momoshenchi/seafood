@@ -273,6 +273,8 @@ public class OrderManager
         Connection con = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date order_time = null;
+        List<BeanCart>l=new ArrayList<>();
+        int flag=0;
         try
         {
             order_time = sdf.parse(ordertime);
@@ -308,24 +310,49 @@ public class OrderManager
                     pst.setInt(6, bo.getOrderid());
                     pst.executeUpdate();
                     pst.close();
-                    return;
+                    flag=1;
                 }
             }
-            sql = "update orders  set  order_time = ? ,addressid = ?, " +
-                    "orderstatus = ? where orderid = ? ";
-            pst = con.prepareStatement(sql);
-            pst.setTimestamp(1, new Timestamp(order_time.getTime()));
-            pst.setInt(2, addressid);
-            pst.setString(3, "已支付");
-            pst.setInt(4, bo.getOrderid());
-            pst.executeUpdate();
-            pst.close();
+            if(flag==0)
+            {
+                sql = "update orders  set  order_time = ? ,addressid = ?, " +
+                        "orderstatus = ? where orderid = ? ";
+                pst = con.prepareStatement(sql);
+                pst.setTimestamp(1, new Timestamp(order_time.getTime()));
+                pst.setInt(2, addressid);
+                pst.setString(3, "已支付");
+                pst.setInt(4, bo.getOrderid());
+                pst.executeUpdate();
+                pst.close();
+            }
             sql = "update order_detail set orderstatus = ? where orderid = ?";
             pst = con.prepareStatement(sql);
             pst.setString(1, "已支付");
             pst.setInt(2, bo.getOrderid());
             pst.executeUpdate();
             pst.close();
+            sql="select commodityid ,number from order_detail where orderid = ? ";
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, bo.getOrderid());
+            rs=pst.executeQuery();
+            while(rs.next())
+            {
+                BeanCart bc=new BeanCart();
+                bc.setCommodityid(rs.getInt(1));
+                bc.setNumber(rs.getInt(2));
+                l.add(bc);
+            }
+            rs.close();
+            pst.close();
+            for(int i=0;i<l.size();++i)
+            {
+                sql = "update commodity set remain_number = remain_number - ? where commodityid = ? ";
+                pst = con.prepareStatement(sql);
+                pst.setInt(1, l.get(i).getNumber());
+                pst.setInt(2, l.get(i).getCommodityid());
+                pst.executeUpdate();
+                pst.close();
+            }
             con.commit();
         }
         catch (SQLException e)

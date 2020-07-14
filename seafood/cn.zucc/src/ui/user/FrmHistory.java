@@ -33,8 +33,8 @@ public class FrmHistory extends JDialog implements ActionListener
         tblData = new Object[pubs.size()][5];
         for (int i = 0; i < pubs.size(); i++)
         {
-            tblData[i][0] = pubs.get(i).getOri_amount() + "";
-            tblData[i][1] = pubs.get(i).getSet_amount() + "";
+            tblData[i][0] = String.format("%.2f", pubs.get(i).getOri_amount()) + "";
+            tblData[i][1] = String.format("%.2f", pubs.get(i).getSet_amount()) + "";
             tblData[i][2] = pubs.get(i).getCouponid() + "";
             if(pubs.get(i).getOrder_time()==null||"".equals(pubs.get(i).getOrder_time()))
             {

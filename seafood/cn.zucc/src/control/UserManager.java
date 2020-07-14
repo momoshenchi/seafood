@@ -590,11 +590,27 @@ public class UserManager
         try
         {
             con = DBUtil.getConnection();
-            String sql="select * from cart where commodityid = ? and userid = ? ";
+            String sql="select remain_number from commodity where commodityid = ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, commodityid);
-            pst.setInt(2, userid);
             ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                int n=rs.getInt(1);
+                if(number>n)
+                {
+                    throw  new BusinessException("库存不足");
+                }
+            }
+            else
+            {
+                throw  new BusinessException("commodity is not exist");
+            }
+            sql="select * from cart where commodityid = ? and userid = ? ";
+             pst = con.prepareStatement(sql);
+            pst.setInt(1, commodityid);
+            pst.setInt(2, userid);
+             rs=pst.executeQuery();
             if(rs.next())
             {
                 sql="update cart set number = number + ? where commodityid = ? and userid = ?";
